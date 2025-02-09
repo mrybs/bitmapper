@@ -58,7 +58,7 @@ function render(){
     canvas.style.height=canvas.height+'px'
 
 
-    ctx.fillStyle = 'white'
+    ctx.fillStyle = '#ffffff'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     for(let yi = 0; yi < params.image_height; yi++){
@@ -69,7 +69,7 @@ function render(){
     }
 
     if(params.show_grid){
-        ctx.fillStyle = '#ffffff'
+        ctx.strokeStyle = '#ffffff'
         ctx.lineWidth = 1;
         for(let xi = 0; xi < canvas.width; xi+=canvas.width/params.image_width){
             ctx.beginPath()
