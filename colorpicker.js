@@ -36,9 +36,9 @@ function colorPickerRender(){
     colorPickerCanvas.width = 306
     colorPickerCanvas.height = 306
 
-    a1 = 5.759586531581287 + huePickerPos
-    a2 = 3.6651914291880923 + huePickerPos
-    a3 = 1.5707963267948966 + huePickerPos
+    a1 = 5.759586531581287 - huePickerPos
+    a2 = 3.6651914291880923 - huePickerPos
+    a3 = 1.5707963267948966 - huePickerPos
     p1 = new Vector(127+127*Math.sin(a1),127+127*Math.cos(a1))
     p2 = new Vector(127+127*Math.sin(a2),127+127*Math.cos(a2))
     p3 = new Vector(127+127*Math.sin(a3),127+127*Math.cos(a3))

@@ -146,12 +146,16 @@ canvas.addEventListener('mousedown', function(event){
     event.preventDefault()
     rightPressed = event.button === 2
     leftPressed = event.button === 0
-    render()
+    triggerMouseDraw(event)
 })
 
 canvas.addEventListener('mousemove', function(event){
     event.preventDefault()
-	let pos = windowToCanvas(canvas, event.clientX, event.clientY)
+	triggerMouseDraw(event)
+})
+
+function triggerMouseDraw(event){
+    let pos = windowToCanvas(canvas, event.clientX, event.clientY)
     params = get_params()
     if(rightPressed){
         canvas_pos_offset.x += event.movementX
@@ -165,7 +169,26 @@ canvas.addEventListener('mousemove', function(event){
         //buffer[currentPoint.y][currentPoint.x] = 'orange'
     }
     render()
-})
+}
+
+const saveButton = document.getElementById('save_button');
+
+// Добавляем обработчик клика на кнопку
+saveButton.addEventListener('click', function() {
+    // Создаем временную ссылку
+    const link = document.createElement('a');
+
+    // Генерируем Data URL изображения в формате PNG
+    link.download = 'canvas_image.png'; // Имя файла
+    link.href = canvas.toDataURL();     // Преобразуем canvas в изображение
+
+    // Программно кликаем по ссылке для скачивания
+    link.click();
+
+    // Удаляем ссылку из DOM
+    link.remove();
+});
+
 
 canvas.addEventListener('contextmenu', event => {
     event.preventDefault();

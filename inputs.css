@@ -119,3 +119,15 @@ input[type="checkbox"]:checked + label:after,
 input[type="radio"]:checked + label:after {
     opacity: 1;
 }
+button{
+    background-color: var(--inputs-background-color);
+    border-radius: 5px;
+    border: none;
+    display: block;
+    margin: 10px auto;
+    color: var(--foreground-color);
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Ubuntu';
+    padding: 10px;
+}
