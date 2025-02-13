@@ -32,10 +32,12 @@ function getTriagnleColor(pc){
     rotatedp = toPolar(pc)
     rotatedp.y -= huePickerPos
     rotateddc = toDecart(rotatedp)
-    rotatedd = new Vector(rotateddc.x+127-25, rotateddc.y+127-25)
+    rotatedd = new Vector(rotateddc.x+127-50, rotateddc.y+127-25)
     //return `hsl(${huePickerPos}rad, ${rotatedd.x/2.06}%, ${100-rotatedd.y/2.06}%)`
     return hslToRgb(huePickerPos, rotatedd.x/2.06, 100-rotatedd.y/2.06)
 }
+
+funcion
 
 function hueToRgb(p, q, t) {
     if (t < 0) t += 1;
@@ -62,6 +64,34 @@ function hslToRgb(h, s, l) {
 
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
+/*const hslToRgb = (h, s, l) => {
+    h/=Math.PI*2;
+    s/=100;
+    l/=100;
+    var r, g, b;
+
+    if (s == 0) {
+        r = g = b = l; // achromatic
+    } else {
+        function hue2rgb(p, q, t) {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1/6) return p + (q - p) * 6 * t;
+            if (t < 1/2) return q;
+            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        }
+
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+    }
+
+    return [ r * 255, g * 255, b * 255 ];
+};*/
 
 function colorPickerRender(){
     colorPickerCanvas.width = 306
@@ -82,11 +112,11 @@ function colorPickerRender(){
             let rgb = [31, 31, 31]
             if(t.y*(p2.x-p1.x)>(p2.y-p1.y)*(t.x-p2.x)+p2.y*(p2.x-p1.x)&&
                t.y*(p3.x-p2.x)>(p3.y-p2.y)*(t.x-p3.x)+p3.y*(p3.x-p2.x)&&
-               t.y*(p3.x-p1.x)<(p3.y-p1.y)*(t.x-p1.x)+p1.y*(p3.x-p1.x) || 1
+               t.y*(p3.x-p1.x)<(p3.y-p1.y)*(t.x-p1.x)+p1.y*(p3.x-p1.x)// || 1
             ){
                 //colorPickerCtx.fillStyle = getTriagnleColor(tc)
                 rgb = getTriagnleColor(tc)
-                if(0 > rgb[0] || rgb[0] > 255 || 0 > rgb[1] || rgb[1] > 255 || 0 > rgb[2] || rgb[2] > 255) rgb=[0,255,255]
+                //if(0 > rgb[0] || rgb[0] > 255 || 0 > rgb[1] || rgb[1] > 255 || 0 > rgb[2] || rgb[2] > 255) rgb=[0,255,255]
             }
             //if(rt.x > 127 && rt.x < 153) colorPickerCtx.fillStyle=`hsl(${rt.y}rad, 100%, 50%)`
             const i = (yi * 306 + xi) * 4;
