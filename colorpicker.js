@@ -37,8 +37,6 @@ function getTriagnleColor(pc){
     return hslToRgb(huePickerPos, rotatedd.x/2.06, 100-rotatedd.y/2.06)
 }
 
-funcion
-
 function hueToRgb(p, q, t) {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;

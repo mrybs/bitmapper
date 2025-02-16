@@ -13,6 +13,12 @@ let checkboxes = {
 let buffer = []
 let params = get_params()
 
+function setPixel(pos, style){
+    ctx.fillStyle = style
+    ctx.fillRect(pos.x*canvas.width/params.image_width, pos.y*canvas.height/params.image_height, canvas.width/params.image_width+0.5, canvas.height/params.image_height+0.5)
+    buffer[pos.y][pos.x] = style
+}
+
 function update_buffer(params){
     if(buffer.length > params.image_height){
         buffer = buffer.slice(0, params.image_height)
@@ -97,7 +103,8 @@ function drawLine(p0, p1, color){
         if (dy > 0) diry = 1
         if (dy < 0) diry = -1
         for (let x = Math.min(p0.x, p1.x); x < Math.max(p0.x, p1.x); x++) {
-            buffer[y][x] = color
+            //buffer[y][x] = color
+            setPixel(new Vector(x, y), color)
             error += derror
             if (error >= dx + 1) {
                 y += diry
@@ -111,7 +118,8 @@ function drawLine(p0, p1, color){
         if (dx > 0) dirx = 1
         if (dx < 0) dirx = -1
         for (let y = Math.min(p0.y, p1.y); y < Math.max(p0.y, p1.y); y++) {
-            buffer[y][x] = color
+            //buffer[y][x] = color
+            setPixel(new Vector(x, y), color)
             error += derror
             if (error >= dy + 1) {
                 x += dirx
@@ -163,12 +171,14 @@ function triggerMouseDraw(event){
     }
     if(leftPressed){
         let currentPoint = new Vector(Math.floor(pos.x/canvas.width*params.image_width), Math.floor(pos.y/canvas.height*params.image_height))
+        //if(lastPoint != null) drawLine(currentPoint, lastPoint, 'orange')
+        //else buffer[currentPoint.y][currentPoint.x] = 'orange'
         if(lastPoint != null) drawLine(currentPoint, lastPoint, 'orange')
-        else buffer[currentPoint.y][currentPoint.x] = 'orange'
+        else setPixel(new Vector(currentPoint.x, currentPoint.y), 'orange')
         lastPoint = structuredClone(currentPoint)
         //buffer[currentPoint.y][currentPoint.x] = 'orange'
     }
-    render()
+    //render()
 }
 
 const saveButton = document.getElementById('save_button');
