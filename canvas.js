@@ -17,6 +17,8 @@ function setPixel(pos, style){
     ctx.fillStyle = style
     ctx.fillRect(pos.x*canvas.width/params.image_width, pos.y*canvas.height/params.image_height, canvas.width/params.image_width+0.5, canvas.height/params.image_height+0.5)
     buffer[pos.y][pos.x] = style
+    //ctx.strokeStyle = 'white'
+    //ctx.strokeRect(pos.x*canvas.width/params.image_width, pos.y*canvas.height/params.image_height, canvas.width/params.image_width+0.5, canvas.height/params.image_height+0.5)
 }
 
 function update_buffer(params){
@@ -29,7 +31,7 @@ function update_buffer(params){
     }
     for(let i = 0; i < buffer.length; i++){
         if(buffer[i].length > params.image_width){
-            buffer = buffer.slice(0, params.image_width-1)
+            buffer[i] = buffer[i].slice(0, params.image_width-1)
         }
         if(buffer[i].length < params.image_width){
             buffer[i] = buffer[i].concat(Array.from({length: params.image_width-buffer[i].length}, (_, i) => '#000000'))
@@ -46,6 +48,23 @@ function get_params(){
         _params[key] = value.checked
     }
     return _params
+}
+
+function renderGrid(){
+    ctx.strokeStyle = '#ffffff'
+    ctx.lineWidth = 1;
+    for(let xi = 0; xi < canvas.width; xi+=canvas.width/params.image_width){
+        ctx.beginPath()
+        ctx.moveTo(xi, 0)
+        ctx.lineTo(xi, canvas.height)
+        ctx.stroke()
+    }
+    for(let yi = 0; yi < canvas.height; yi+=canvas.height/params.image_height){
+        ctx.beginPath()
+        ctx.moveTo(0, yi)
+        ctx.lineTo(canvas.width, yi)
+        ctx.stroke()
+    }
 }
 
 function render(){
@@ -75,56 +94,35 @@ function render(){
     }
 
     if(params.show_grid){
-        ctx.strokeStyle = '#ffffff'
-        ctx.lineWidth = 1;
-        for(let xi = 0; xi < canvas.width; xi+=canvas.width/params.image_width){
-            ctx.beginPath()
-            ctx.moveTo(xi, 0)
-            ctx.lineTo(xi, canvas.height)
-            ctx.stroke()
-        }
-        for(let yi = 0; yi < canvas.height; yi+=canvas.height/params.image_height){
-            ctx.beginPath()
-            ctx.moveTo(0, yi)
-            ctx.lineTo(canvas.width, yi)
-            ctx.stroke()
-        }
+        renderGrid()
     }
 }
 
-function drawLine(p0, p1, color){
-    let dx = Math.abs(p0.x - p1.x)
-    let dy = Math.abs(p0.y - p1.y)
-    let error = 0
-    if(dy/dx < 1) {
-        let derror = dy + 1
-        let y = Math.min(p0.y, p1.y)
-        let diry = 0
-        if (dy > 0) diry = 1
-        if (dy < 0) diry = -1
-        for (let x = Math.min(p0.x, p1.x); x < Math.max(p0.x, p1.x); x++) {
-            //buffer[y][x] = color
-            setPixel(new Vector(x, y), color)
-            error += derror
-            if (error >= dx + 1) {
-                y += diry
-                error -= dx + 1
-            }
+function drawLine(start, end, style) {
+    let x0 = start.x;
+    let y0 = start.y;
+    const x1 = end.x;
+    const y1 = end.y;
+    
+    const dx = Math.abs(x1 - x0);
+    const dy = Math.abs(y1 - y0);
+    const sx = x0 < x1 ? 1 : -1;
+    const sy = y0 < y1 ? 1 : -1;
+    let err = dx - dy;
+
+    while(true) {
+        setPixel(new Vector(x0, y0), style);
+        
+        if(x0 === x1 && y0 === y1) break;
+        
+        const e2 = 2 * err;
+        if(e2 > -dy) {
+            err -= dy;
+            x0 += sx;
         }
-    }else{
-        let derror = dx + 1
-        let x = Math.min(p0.x, p1.x)
-        let dirx = 0
-        if (dx > 0) dirx = 1
-        if (dx < 0) dirx = -1
-        for (let y = Math.min(p0.y, p1.y); y < Math.max(p0.y, p1.y); y++) {
-            //buffer[y][x] = color
-            setPixel(new Vector(x, y), color)
-            error += derror
-            if (error >= dy + 1) {
-                x += dirx
-                error -= dy + 1
-            }
+        if(e2 < dx) {
+            err += dx;
+            y0 += sy;
         }
     }
 }
@@ -147,7 +145,7 @@ canvas.addEventListener('mouseup', function(event){
     rightPressed = false
     leftPressed = false
     lastPoint = null
-    render()
+    //render()
 })
 
 canvas.addEventListener('mousedown', function(event){
@@ -168,6 +166,7 @@ function triggerMouseDraw(event){
     if(rightPressed){
         canvas_pos_offset.x += event.movementX
         canvas_pos_offset.y += event.movementY
+        render()
     }
     if(leftPressed){
         let currentPoint = new Vector(Math.floor(pos.x/canvas.width*params.image_width), Math.floor(pos.y/canvas.height*params.image_height))
@@ -185,6 +184,7 @@ const saveButton = document.getElementById('save_button');
 
 // Добавляем обработчик клика на кнопку
 saveButton.addEventListener('click', function() {
+    render()
     // Создаем временную ссылку
     const link = document.createElement('a');
 
