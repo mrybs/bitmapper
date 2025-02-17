@@ -12,6 +12,7 @@ let checkboxes = {
 
 let buffer = []
 let params = get_params()
+let currentBrush = new Brush(setPixel, 1)
 
 function setPixel(pos, style){
     ctx.fillStyle = style
@@ -50,6 +51,21 @@ function get_params(){
     return _params
 }
 
+function resizeCanvas(params){
+    let canvas_rect = canvas.getBoundingClientRect()
+    let max_pwh = Math.max(params.image_width, params.image_height)
+    let min_wwh = Math.min(window.innerWidth, window.innerHeight)
+    canvas.width = min_wwh/max_pwh*params.image_width
+    canvas.height = min_wwh/max_pwh*params.image_height
+    canvas.style.width=canvas.width+'px'
+    canvas.style.height=canvas.height+'px'
+}
+
+function locateCanvas(params){
+    canvas.style.left=(window.innerWidth-canvas.width)/2+canvas_pos_offset.x+'px'
+    canvas.style.top=(window.innerHeight-canvas.height)/2+canvas_pos_offset.y+'px'
+}
+
 function renderGrid(){
     ctx.strokeStyle = '#ffffff'
     ctx.lineWidth = 1;
@@ -71,17 +87,8 @@ function render(){
     let params = get_params()
 
     update_buffer(params)
-
-    let canvas_rect = canvas.getBoundingClientRect()
-    let max_pwh = Math.max(params.image_width, params.image_height)
-    let min_wwh = Math.min(window.innerWidth, window.innerHeight)
-    canvas.width = min_wwh/max_pwh*params.image_width
-    canvas.height = min_wwh/max_pwh*params.image_height
-    canvas.style.left=(window.innerWidth-canvas.width)/2+canvas_pos_offset.x+'px'
-    canvas.style.top=(window.innerHeight-canvas.height)/2+canvas_pos_offset.y+'px'
-    canvas.style.width=canvas.width+'px'
-    canvas.style.height=canvas.height+'px'
-
+    resizeCanvas(params)
+    locateCanvas(params)
 
     ctx.fillStyle = '#ffffff'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -111,7 +118,8 @@ function drawLine(start, end, style) {
     let err = dx - dy;
 
     while(true) {
-        setPixel(new Vector(x0, y0), style);
+        //setPixel(new Vector(x0, y0), style);
+        currentBrush.draw(new Vector(x0, y0), style)
         
         if(x0 === x1 && y0 === y1) break;
         
@@ -130,10 +138,6 @@ function drawLine(start, end, style) {
 let leftPressed = false
 let rightPressed = false
 let lastPoint = null
-let longPressTimer = null
-let startTouch = null
-let lastTouch = null
-let isMove = false
 
 render()
 
@@ -145,16 +149,13 @@ function windowToCanvas(cnvs, x, y) {
 }
 
 canvas.addEventListener('mouseup', end_action)
+canvas.addEventListener('mouseout', end_action)
 canvas.addEventListener('touchend', end_action)
 function end_action(event){
     event.preventDefault()
     rightPressed = false
     leftPressed = false
     lastPoint = null
-    clearTimeout(longPressTimer);
-    lastTouch = null
-    startTouch = null
-    isMove = false
     //render()
 }
 
@@ -162,23 +163,21 @@ canvas.addEventListener('mousedown', (e)=>{
     e.preventDefault();
     start_action(e, 0)
 })
+canvas.addEventListener('mouseenter', (e)=>{
+    e.preventDefault();
+    console.log(e)
+    if(e.buttons === 1) start_action(e, 0)
+})
 canvas.addEventListener('touchstart', (e)=>{
     e.preventDefault();
     start_action(e.touches[0], 1)
 })
 function start_action(event, type=0){
-    startTouch = new Vector(event.clientX, event.clientY)
-    if(type == 0){
+    if(type === 0){
         rightPressed = event.button === 2
         leftPressed = event.button === 0
-    }else if(type == 1){
+    }else if(type === 1){
         leftPressed = true
-    longPressTimer = setTimeout(() => {
-        if(isMove) return
-        leftPressed = false
-        rightPressed = true
-        lastTouch = new Vector(event.clientX, event.clientY)
-  }, 500);
     }
     triggerMouseDraw(event)
 }
@@ -190,37 +189,24 @@ function move_action(event, type){
 }
 
 function triggerMouseDraw(event, type=0){
-    console.log('draw')
     let pos = windowToCanvas(canvas, event.clientX, event.clientY)
     params = get_params()
-    let movement = new Vector(0, 0)
-    if(lastTouch != null){
-        movement.x = event.clientX - lastTouch.x;
-        movement.y = event.clientY - lastTouch.y;
-        lastTouch = new Vector(event.clientX, event.clientY)
-    }else{
-        movement.x = event.clientX - startTouch.x;
-        movement.y = event.clientY - startTouch.y;
-        lastTouch = new Vector(event.clientX, event.clientY)
-    }
-    if(movement.x > 0 || movement.y > 0) isMove = true
     if(rightPressed){
         console.log(event)
-        if(type == 0){
+        if(type === 0){
             canvas_pos_offset.x += event.movementX
             canvas_pos_offset.y += event.movementY
-        }else if(type == 1){
-            canvas_pos_offset.x += movement.x
-            canvas_pos_offset.y += movement.y
-        }
-        render()
+        }else if(type === 1){}
+        locateCanvas(get_params())
     }
     if(leftPressed){
         let currentPoint = new Vector(Math.floor(pos.x/canvas.width*params.image_width), Math.floor(pos.y/canvas.height*params.image_height))
+        console.log(currentPoint)
         //if(lastPoint != null) drawLine(currentPoint, lastPoint, 'orange')
         //else buffer[currentPoint.y][currentPoint.x] = 'orange'
         if(lastPoint != null) drawLine(currentPoint, lastPoint, 'orange')
-        else setPixel(new Vector(currentPoint.x, currentPoint.y), 'orange')
+        //else setPixel(new Vector(currentPoint.x, currentPoint.y), 'orange')
+        else currentBrush.draw(currentPoint, 'orange')
         lastPoint = structuredClone(currentPoint)
         //buffer[currentPoint.y][currentPoint.x] = 'orange'
     }
