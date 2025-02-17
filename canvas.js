@@ -130,6 +130,10 @@ function drawLine(start, end, style) {
 let leftPressed = false
 let rightPressed = false
 let lastPoint = null
+let longPressTimer = null
+let startTouch = null
+let lastTouch = null
+let isMove = false
 
 render()
 
@@ -140,32 +144,75 @@ function windowToCanvas(cnvs, x, y) {
     };
 }
 
-canvas.addEventListener('mouseup', function(event){
+canvas.addEventListener('mouseup', end_action)
+canvas.addEventListener('touchend', end_action)
+function end_action(event){
     event.preventDefault()
     rightPressed = false
     leftPressed = false
     lastPoint = null
+    clearTimeout(longPressTimer);
+    lastTouch = null
+    startTouch = null
+    isMove = false
     //render()
-})
+}
 
-canvas.addEventListener('mousedown', function(event){
-    event.preventDefault()
-    rightPressed = event.button === 2
-    leftPressed = event.button === 0
+canvas.addEventListener('mousedown', (e)=>{
+    e.preventDefault();
+    start_action(e, 0)
+})
+canvas.addEventListener('touchstart', (e)=>{
+    e.preventDefault();
+    start_action(e.touches[0], 1)
+})
+function start_action(event, type=0){
+    startTouch = new Vector(event.clientX, event.clientY)
+    if(type == 0){
+        rightPressed = event.button === 2
+        leftPressed = event.button === 0
+    }else if(type == 1){
+        leftPressed = true
+    longPressTimer = setTimeout(() => {
+        if(isMove) return
+        leftPressed = false
+        rightPressed = true
+        lastTouch = new Vector(event.clientX, event.clientY)
+  }, 500);
+    }
     triggerMouseDraw(event)
-})
+}
 
-canvas.addEventListener('mousemove', function(event){
-    event.preventDefault()
-	triggerMouseDraw(event)
-})
+canvas.addEventListener('mousemove', (e)=>{e.preventDefault();move_action(e, 0)})
+canvas.addEventListener('touchmove', (e)=>{e.preventDefault();move_action(e.touches[0], 1)})
+function move_action(event, type){
+	triggerMouseDraw(event, type)
+}
 
-function triggerMouseDraw(event){
+function triggerMouseDraw(event, type=0){
+    console.log('draw')
     let pos = windowToCanvas(canvas, event.clientX, event.clientY)
     params = get_params()
+    let movement = new Vector(0, 0)
+    if(lastTouch != null){
+        movement.x = event.clientX - lastTouch.x;
+        movement.y = event.clientY - lastTouch.y;
+        lastTouch = new Vector(event.clientX, event.clientY)
+    }else{
+        movement.x = event.clientX - startTouch.x;
+        movement.y = event.clientY - startTouch.y;
+        lastTouch = new Vector(event.clientX, event.clientY)
+    }
+    if(movement.x > 0 || movement.y > 0) isMove = true
     if(rightPressed){
-        canvas_pos_offset.x += event.movementX
-        canvas_pos_offset.y += event.movementY
+        console.log(event)
+        if(type == 0){
+            canvas_pos_offset.x += event.movementX
+            canvas_pos_offset.y += event.movementY
+        }else if(type == 1){
+            canvas_pos_offset.x += movement.x
+            canvas_pos_offset.y += movement.y
+        }
         render()
     }
     if(leftPressed){
