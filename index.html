@@ -6,37 +6,30 @@
         <link href="pallete.css" rel="stylesheet">
         <link href="inputs.css" rel="stylesheet">
         <link href="styles.css" rel="stylesheet">
+        <link href="popup.css" rel="stylesheet">
     </head>
     <body>
-        <div id="leftpane">
-            <div class="input-wrapper"><label for="image_width">Ширина</label><input type="number" id="image_width" value="32" oninput="render()"></div>
-            <div class="input-wrapper"><label for="image_height">Высота</label><input type="number" id="image_height" value="32" oninput="render()"></div>
-            <div class="input-wrapper"><input type="checkbox" id="show_grid" oninput="render()"><label for="show_grid">Показать сетку</label></div>
-            <fieldset>
-                <legend>Глубина цвета</legend>
-                <input type="radio" name="color_depth" id="1bit" checked/><label for="1bit">1 бит</label><br>
-                <input type="radio" name="color_depth" id="1bitinv"/><label for="1bitinv">1 бит инвертировано</label><br>
-                <input type="radio" name="color_depth" id="8bit"/><label for="8bit">8 бит - 323</label><br>
-                <input type="radio" name="color_depth" id="16bit"/><label for="16bit">16 бит - 565</label><br>
-                <input type="radio" name="color_depth" id="24bit"/><label for="24bit">24 бит</label><br>
-                <input type="radio" name="color_depth" id="248bit"/><label for="248bit">24 бит + 8 бит</label><br>
-                <input type="radio" name="color_depth" id="824bit"/><label for="824bit">8 бит + 24 бит</label>
-            </fieldset>
-            <div>
-                <canvas id="colorpicker">
-                    Ваш браузер не поддерживает канвасы
-                </canvas>
+        <div id="workspace">
+            <div id="leftpane">
+                <div class="input-wrapper"><input type="checkbox" id="show_grid" oninput="render()"><label for="show_grid">Показать сетку</label></div>
+                <div>
+                    <canvas id="colorpicker">
+                        Ваш браузер не поддерживает канвасы
+                    </canvas>
+                </div>
+                <div class="input-wrapper"><label for="color1">Основной цвет</label><input type="color" id="color1" value="#ffffff" oninput="render()"></div>
+                <button id="save_button">Сохранить на компьютер</button>
             </div>
-            <div class="input-wrapper"><label for="color1">Основной цвет</label><input type="color" id="color1" value="#ffffff" oninput="render()"></div>
-            <button id="save_button">Сохранить на компьютер</button>
+            <canvas id="editor">
+                Ваш браузер не поддерживает канвасы
+            </canvas>
         </div>
-        <canvas id="editor">
-            Ваш браузер не поддерживает канвасы
-        </canvas>
         <script src="vector.js"></script>
         <script src="brush.js"></script>
         <script src="brushes/squared.js"></script>
         <script src="colorpicker.js"></script>
         <script src="canvas.js"></script>
+        <script src="popup.js"></script>
+        <script src="core.js"></script>
     </body>
 </html>

@@ -21,13 +21,16 @@ html, body{
     text-align: center;
     
 }
-.input-wrapper>input[type="number"], 
-.input-wrapper:has(input[type="number"])>label{
+.input-wrapper>input[type="number"],
+.input-wrapper:has(input[type="number"])>label,
+.input-wrapper>input[type="text"],
+.input-wrapper:has(input[type="text"])>label{
     display: inline;
     min-width: 130px;
     margin: 0 10px;
 }
-.input-wrapper>input[type="number"]{
+.input-wrapper>input[type="number"],
+.input-wrapper>input[type="text"]{
     right: 0;
 }
 fieldset>*{

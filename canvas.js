@@ -13,13 +13,20 @@ let checkboxes = {
 let buffer = []
 let params = get_params()
 let currentBrush = new Brush(setPixel, 1)
+let pointsToDraw = []
+let maxFramerate = 165
+
+setInterval(function(){
+    while(pointsToDraw.length > 0) {
+        let point = pointsToDraw.shift()
+        ctx.fillStyle = point.style
+        ctx.fillRect(point.pos.x * canvas.width / params.image_width, point.pos.y * canvas.height / params.image_height, canvas.width / params.image_width, canvas.height / params.image_height)
+        buffer[point.pos.y][point.pos.x] = point.style
+    }
+}, 1/maxFramerate)
 
 function setPixel(pos, style){
-    ctx.fillStyle = style
-    ctx.fillRect(pos.x*canvas.width/params.image_width, pos.y*canvas.height/params.image_height, canvas.width/params.image_width+0.5, canvas.height/params.image_height+0.5)
-    buffer[pos.y][pos.x] = style
-    //ctx.strokeStyle = 'white'
-    //ctx.strokeRect(pos.x*canvas.width/params.image_width, pos.y*canvas.height/params.image_height, canvas.width/params.image_width+0.5, canvas.height/params.image_height+0.5)
+    pointsToDraw.push({pos: pos, style:style})
 }
 
 function update_buffer(params){
@@ -110,15 +117,14 @@ function drawLine(start, end, style) {
     let y0 = start.y;
     const x1 = end.x;
     const y1 = end.y;
-    
+
     const dx = Math.abs(x1 - x0);
     const dy = Math.abs(y1 - y0);
     const sx = x0 < x1 ? 1 : -1;
     const sy = y0 < y1 ? 1 : -1;
     let err = dx - dy;
 
-    while(true) {
-        //setPixel(new Vector(x0, y0), style);
+    while(true){
         currentBrush.draw(new Vector(x0, y0), style)
         
         if(x0 === x1 && y0 === y1) break;
@@ -151,12 +157,12 @@ function windowToCanvas(cnvs, x, y) {
 canvas.addEventListener('mouseup', end_action)
 canvas.addEventListener('mouseout', end_action)
 canvas.addEventListener('touchend', end_action)
+canvas.addEventListener('touchcancel', end_action)
 function end_action(event){
     event.preventDefault()
     rightPressed = false
     leftPressed = false
     lastPoint = null
-    //render()
 }
 
 canvas.addEventListener('mousedown', (e)=>{
@@ -192,7 +198,6 @@ function triggerMouseDraw(event, type=0){
     let pos = windowToCanvas(canvas, event.clientX, event.clientY)
     params = get_params()
     if(rightPressed){
-        console.log(event)
         if(type === 0){
             canvas_pos_offset.x += event.movementX
             canvas_pos_offset.y += event.movementY
@@ -201,34 +206,20 @@ function triggerMouseDraw(event, type=0){
     }
     if(leftPressed){
         let currentPoint = new Vector(Math.floor(pos.x/canvas.width*params.image_width), Math.floor(pos.y/canvas.height*params.image_height))
-        console.log(currentPoint)
-        //if(lastPoint != null) drawLine(currentPoint, lastPoint, 'orange')
-        //else buffer[currentPoint.y][currentPoint.x] = 'orange'
         if(lastPoint != null) drawLine(currentPoint, lastPoint, 'orange')
-        //else setPixel(new Vector(currentPoint.x, currentPoint.y), 'orange')
         else currentBrush.draw(currentPoint, 'orange')
         lastPoint = structuredClone(currentPoint)
-        //buffer[currentPoint.y][currentPoint.x] = 'orange'
     }
-    //render()
 }
 
 const saveButton = document.getElementById('save_button');
 
-// Добавляем обработчик клика на кнопку
 saveButton.addEventListener('click', function() {
     render()
-    // Создаем временную ссылку
     const link = document.createElement('a');
-
-    // Генерируем Data URL изображения в формате PNG
-    link.download = 'canvas_image.png'; // Имя файла
-    link.href = canvas.toDataURL();     // Преобразуем canvas в изображение
-
-    // Программно кликаем по ссылке для скачивания
+    link.download = 'canvas_image.png';
+    link.href = canvas.toDataURL();
     link.click();
-
-    // Удаляем ссылку из DOM
     link.remove();
 });
 
