@@ -2,6 +2,7 @@
 <html lang="ru">
     <head>
         <meta charset="UTF-8">
+        <title>Bitmapper</title>
         <link href="imports.css" rel="stylesheet">
         <link href="pallete.css" rel="stylesheet">
         <link href="inputs.css" rel="stylesheet">
@@ -10,8 +11,8 @@
     </head>
     <body>
         <div id="workspace">
-            <div id="leftpane">
-                <div class="input-wrapper"><input type="checkbox" id="show_grid" oninput="render()"><label for="show_grid">Показать сетку</label></div>
+            <div id="toolpane">
+                <div class="input-wrapper"><input type="checkbox" id="show_grid"><label for="show_grid">Показать сетку</label></div>
                 <div>
                     <canvas id="colorpicker">
                         Ваш браузер не поддерживает канвасы
@@ -20,13 +21,19 @@
                 <div class="input-wrapper"><label for="color1">Основной цвет</label><input type="color" id="color1" value="#ffffff" oninput="render()"></div>
                 <button id="save_button">Сохранить на компьютер</button>
             </div>
+            <div id="statusbar">
+                200225a
+                <a target="_blank" href="https://github.com/mrybs/bitmapper">GitHub</a>
+                <a target="_blank" href="https://t.me/mrybspublicmatrixchat">Telegram</a>
+            </div>
             <canvas id="editor">
                 Ваш браузер не поддерживает канвасы
             </canvas>
         </div>
+        <script src="plugins/plugin.js"></script>
         <script src="vector.js"></script>
         <script src="brush.js"></script>
-        <script src="brushes/squared.js"></script>
+        <script src="plugins/core/brushes/squared.js"></script>
         <script src="colorpicker.js"></script>
         <script src="canvas.js"></script>
         <script src="popup.js"></script>

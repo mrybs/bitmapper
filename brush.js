@@ -1,12 +1,12 @@
 class Brush{
-    constructor(setPixel, size){
+    constructor(canvas, size){
         this.meta = {
             'name': 'Кисть'
         }
-        this.setPixel = setPixel
+        this.canvas = canvas
         this.size = size
     }
     draw(pos, style){
-        this.setPixel(pos, style)
+        this.canvas.setPixel(pos, style)
     }
 }

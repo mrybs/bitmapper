@@ -107,7 +107,7 @@ function colorPickerRender(){
             let t = new Vector(xi-25, yi-25)
             let tc = new Vector(xi-25-127, yi-25-127)
             let rt = toPolar(tc)
-            let rgb = [31, 31, 31]
+            let rgb = [33, 33, 33]
             if(t.y*(p2.x-p1.x)>(p2.y-p1.y)*(t.x-p2.x)+p2.y*(p2.x-p1.x)&&
                t.y*(p3.x-p2.x)>(p3.y-p2.y)*(t.x-p3.x)+p3.y*(p3.x-p2.x)&&
                t.y*(p3.x-p1.x)<(p3.y-p1.y)*(t.x-p1.x)+p1.y*(p3.x-p1.x)// || 1
@@ -224,7 +224,3 @@ function mousemove(event){
 function getColorRGB(){
     return getTriagnleColor(new Vector(pickerPos.x-25-127, pickerPos.y-25-127))
 }
-
-_start = Date.now() / 1000
-for(let i = 0; i < 60; i++) colorPickerRender()
-alert(`Кадров в секунду ${60/(Date.now() / 1000 - _start)}`)
