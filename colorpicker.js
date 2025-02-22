@@ -225,4 +225,4 @@ function mousemove(event){
 function getColorRGB(){
     return getTriagnleColor(new Vector(pickerPos.x-25-127, pickerPos.y-25-127))
 }
-let selectedColor = 'orange'; // По умолчанию
+let selectedColor = 'orange';
