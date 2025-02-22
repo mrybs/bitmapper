@@ -9,7 +9,7 @@ class Canvas{
         for(let yi = 0; yi < this.projectSettings.image_height; yi++){
             this.buffer.push([])
             for(let xi = 0; xi < this.projectSettings.image_width; xi++){
-                this.buffer[this.buffer.length-1].push('#000000')
+                this.buffer[this.buffer.length-1].push('#00000000')
             }
         }
         //this.params = get_params()
@@ -176,8 +176,8 @@ class Canvas{
         const sy = y0 < y1 ? 1 : -1;
         let err = dx - dy;
 
-        while(true){
-            this.currentBrush.draw(new Vector(x0, y0), style)
+        while (true) {
+            this.currentBrush.draw(new Vector(x0, y0), selectedColor)
 
             if(x0 === x1 && y0 === y1) break;
 
@@ -215,9 +215,9 @@ class Canvas{
         }
         if(this.leftPressed){
             let currentPoint = new Vector(Math.floor(pos.x/this.canvas.width*this.projectSettings.image_width),
-                Math.floor(pos.y/this.canvas.height*this.projectSettings.image_height))
-            if(this.lastPoint != null) this.drawLine(currentPoint, this.lastPoint, 'orange')
-            else this.currentBrush.draw(currentPoint, 'orange')
+                Math.floor(pos.y / this.canvas.height * this.projectSettings.image_height))
+            if (this.lastPoint != null) this.drawLine(currentPoint, this.lastPoint, selectedColor)
+            else this.currentBrush.draw(currentPoint, selectedColor)
             this.lastPoint = structuredClone(currentPoint)
         }
     }

@@ -136,6 +136,7 @@ function drawColorPicker(){
     colorPickerCtx.arc(pickerPos.x, pickerPos.y, 7.5, 0, 2 * Math.PI);
     let rgb = getTriagnleColor(new Vector(pickerPos.x-25-127, pickerPos.y-25-127));
     colorPickerCtx.fillStyle = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+    selectedColor = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
     colorPickerCtx.fill();
     colorPickerCtx.lineWidth = 4;
     colorPickerCtx.strokeStyle = "white";
@@ -224,3 +225,4 @@ function mousemove(event){
 function getColorRGB(){
     return getTriagnleColor(new Vector(pickerPos.x-25-127, pickerPos.y-25-127))
 }
+let selectedColor = 'orange'; // По умолчанию
