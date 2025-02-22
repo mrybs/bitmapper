@@ -9,7 +9,7 @@ class Canvas{
         for(let yi = 0; yi < this.projectSettings.image_height; yi++){
             this.buffer.push([])
             for(let xi = 0; xi < this.projectSettings.image_width; xi++){
-                this.buffer[this.buffer.length-1].push('#00000000')
+                this.buffer[this.buffer.length-1].push('#000000')
             }
         }
         //this.params = get_params()
