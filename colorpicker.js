@@ -173,10 +173,37 @@ colorPickerCanvas.addEventListener('mouseup', function(event){
     dragPicker = false
     dragHuePicker = false
 })
+colorPickerCanvas.addEventListener('touchend', function(event){
+    event.preventDefault()
+    colorPickerLeftPressed = false
+    lastPoint = null
+    dragPicker = false
+    dragHuePicker = false
+})
 
 colorPickerCanvas.addEventListener('mousedown', function(event){
     event.preventDefault()
     colorPickerLeftPressed = event.button === 0
+    startmove(event)
+    mousemove(event)
+})
+colorPickerCanvas.addEventListener('touchstart', function(event){
+    event.preventDefault()
+    colorPickerLeftPressed = true
+    startmove(event.touches[0])
+    mousemove(event.touches[0])
+})
+
+
+colorPickerCanvas.addEventListener('mousemove', function(event){
+    event.preventDefault()
+	mousemove(event)
+})
+colorPickerCanvas.addEventListener('touchmove', function(event){
+    event.preventDefault()
+	mousemove(event.touches[0])
+})
+function startmove(event){
     let pos = windowToCanvas(colorPickerCanvas, event.clientX, event.clientY)
     if(distance(pos, pickerPos) <= 11.5) {
         dragPicker = true
@@ -186,19 +213,13 @@ colorPickerCanvas.addEventListener('mousedown', function(event){
     if(rt.x > 127 && rt.x < 153){
         dragHuePicker = true
     }
-    mousemove(event)
-})
-
-colorPickerCanvas.addEventListener('mousemove', function(event){
-    event.preventDefault()
-	mousemove(event)
-})
+}
 
 function mousemove(event){
     let pos = windowToCanvas(colorPickerCanvas, event.clientX, event.clientY)
     polarPos = toPolar(new Vector(pos.x-153, pos.y-153))
     if(colorPickerLeftPressed){
-        if(dragPicker) {
+        if(!dragHuePicker) {
             a1 = 5.759586531581287 - huePickerPos
             a2 = 3.6651914291880923 - huePickerPos
             a3 = 1.5707963267948966 - huePickerPos
