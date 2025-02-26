@@ -216,7 +216,13 @@ function mousemove(event){
                 drawColorPicker()
             }
         }else if(dragHuePicker){
+            delta = polarPos.y - huePickerPos
             huePickerPos = polarPos.y
+            pickerPosPolar = toPolar(new Vector(pickerPos.x-153, pickerPos.y-153))
+            pickerPosPolar.y += delta
+            pickerPos = toDecart(pickerPosPolar)
+            pickerPos.x += 153
+            pickerPos.y += 153
             colorPickerRender()
         }
     }
