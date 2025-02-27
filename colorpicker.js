@@ -91,6 +91,18 @@ function hslToRgb(h, s, l) {
     return [ r * 255, g * 255, b * 255 ];
 };*/
 
+function nearestPointToLine(a, b, i){
+    //l = ((i.y - b.y) * (b.y - a.y) * (b.x - a.x) + b.x * (b.y - a.y)**2 + i.x * (b.x - a.x)**2) / ((b.y - a.y)**2 + (b.x - a.x)**2)
+    x = ((i.y - b.y) * (b.y - a.y) * (b.x - a.x) + b.x * (b.y - a.y)**2 + i.x * (b.x - a.x)**2) / ((b.y - a.y)**2 + (b.x - a.x)**2)
+    y = ((a.x - b.x) / (b.y - a.y)) * (x - i.x) + i.y
+    return new Vector(x, y)
+}
+
+function isPointOnLine(a, b, i){
+    if((b.y - a.y) / (b.x - a.x) * i.x + b.x * (a.y - b.y) / (b.x - a.x) + b.y != i.y) return false
+    return 0 <= (i.x - a.x) / (b.x - a.x) <= 1
+}
+
 function colorPickerRender(){
     colorPickerCanvas.width = 306
     colorPickerCanvas.height = 306
@@ -234,6 +246,23 @@ function mousemove(event){
                     colorPickerCtx.putImageData(buffer1, pickerPos.x - 12, pickerPos.y - 12);
                 }
                 pickerPos = new Vector(pos.x, pos.y)
+                drawColorPicker()
+            }else{
+                if (buffer1 !== 0) {
+                    colorPickerCtx.putImageData(buffer1, pickerPos.x - 12, pickerPos.y - 12);
+                }
+                let dp1 = distance(p1, pos)
+                let dp2 = distance(p2, pos)
+                let dp3 = distance(p3, pos)
+                let pp1 = nearestPointToLine(p1, p2, pos)
+                let pp2 = nearestPointToLine(p1, p3, pos)
+                let pp3 = nearestPointToLine(p2, p3, pos)
+                let dpp1 = distance(pp1, pos)
+                let dpp2 = distance(pp2, pos)
+                let dpp3 = distance(pp3, pos)
+                if(dpp1 < dpp2 && dpp1 < dpp3 && isPointOnLine(p1, p2, pp1)) pickerPos = pp1
+                if(dpp2 < dpp1 && dpp2 < dpp3 && isPointOnLine(p1, p3, pp2)) pickerPos = pp2
+                if(dpp3 < dpp1 && dpp3 < dpp2 && isPointOnLine(p2, p3, pp3)) pickerPos = pp3
                 drawColorPicker()
             }
         }else if(dragHuePicker){
