@@ -98,9 +98,89 @@ function nearestPointToLine(a, b, i){
     return new Vector(x, y)
 }
 
-function isPointOnLine(a, b, i){
-    if((b.y - a.y) / (b.x - a.x) * i.x + b.x * (a.y - b.y) / (b.x - a.x) + b.y != i.y) return false
-    return 0 <= (i.x - a.x) / (b.x - a.x) <= 1
+/*function isPointOnLine(a, b, i){
+    //if((b.y - a.y) / (b.x - a.x) * i.x + b.x * (a.y - b.y) / (b.x - a.x) + b.y != i.y) return false
+    //let t = (i.x - a.x) / (b.x - a.x)
+    //return 0 <= t && t <= 1
+    a = roundVector(a)
+    b = roundVector(b)
+    i = roundVector(i)
+    if(Math.round((b.x - a.x) * (i.y - a.y)) != Math.round((b.y - a.y) * (i.x - a.x))) return false
+    return (Math.min(a.x, b.x) <= i.x+1 && i.x-1 <= Math.max(a.x, b.x)) || Math.min(a.y, b.y) <= i.y+1 && i.y-1 <= Math.max(a.y, b.y)
+    
+}
+function isPointOnLine(a, b, i, epsilon = 10) {
+    // Проверка коллинеарности с учётом погрешности
+    const crossProduct = (b.x - a.x) * (i.y - a.y) - (b.y - a.y) * (i.x - a.x);
+    if (Math.abs(crossProduct) > epsilon) return false;
+
+    // Проверка, что точка лежит в пределах отрезка (с небольшим допуском для границ)
+    const isBetweenX = (i.x >= Math.min(a.x, b.x) - epsilon) && 
+                      (i.x <= Math.max(a.x, b.x) + epsilon);
+                      
+    const isBetweenY = (i.y >= Math.min(a.y, b.y) - epsilon) && 
+                      (i.y <= Math.max(a.y, b.y) + epsilon);
+
+    return isBetweenX && isBetweenY;
+}
+function isPointOnLine(a, b, i, epsilon = 1) {
+    // Если отрезок вырожден в точку
+    const isSinglePoint = Math.abs(a.x - b.x) < epsilon && Math.abs(a.y - b.y) < epsilon;
+    if (isSinglePoint) {
+        return Math.abs(i.x - a.x) < epsilon && Math.abs(i.y - a.y) < epsilon;
+    }
+
+    // Параметрическое представление: i = a + t*(b - a)
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    
+    // Вычисляем параметр t для координат x и y
+    let tx = (Math.abs(dx) > epsilon) ? (i.x - a.x) / dx : 0;
+    let ty = (Math.abs(dy) > epsilon) ? (i.y - a.y) / dy : 0;
+
+    // Если отрезок вертикальный или горизонтальный, используем другую координату
+    if (Math.abs(dx) < epsilon) tx = ty;
+    if (Math.abs(dy) < epsilon) ty = tx;
+
+    // Проверяем, что t одинаков для x и y (коллинеарность)
+    const isCollinear = Math.abs(tx - ty) < epsilon;
+    
+    // Проверяем, что t ∈ [0, 1] с учётом погрешности
+    const isInBounds = tx >= -epsilon && tx <= 1 + epsilon;
+    
+    return isCollinear && isInBounds;
+}*/
+function isPointOnLine(a, b, i, epsilon = 1) {
+    // 1. Проверка коллинеарности через векторное произведение
+    const crossProduct = (b.x - a.x) * (i.y - a.y) - (b.y - a.y) * (i.x - a.x);
+    if (Math.abs(crossProduct) > epsilon) return false;
+
+    // 2. Проверка, что точка внутри расширенного bounding box отрезка
+    const minX = Math.min(a.x, b.x) - epsilon;
+    const maxX = Math.max(a.x, b.x) + epsilon;
+    const minY = Math.min(a.y, b.y) - epsilon;
+    const maxY = Math.max(a.y, b.y) + epsilon;
+
+    const isInBoundingBox = i.x >= minX && i.x <= maxX && i.y >= minY && i.y <= maxY;
+
+    // 3. Для почти вертикальных/горизонтальных отрезков — дополнительная проверка проекции
+    const isVertical = Math.abs(b.x - a.x) < epsilon;
+    const isHorizontal = Math.abs(b.y - a.y) < epsilon;
+
+    if (isVertical) {
+        // Вертикальный отрезок: проверяем y-координату
+        return isInBoundingBox && Math.abs(i.x - a.x) <= epsilon;
+    }
+    if (isHorizontal) {
+        // Горизонтальный отрезок: проверяем x-координату
+        return isInBoundingBox && Math.abs(i.y - a.y) <= epsilon;
+    }
+
+    return isInBoundingBox;
+}
+
+function roundVector(a){
+    return new Vector(Math.round(a.x), Math.round(a.y))
 }
 
 function colorPickerRender(){
@@ -143,6 +223,8 @@ function colorPickerRender(){
     drawHuePicker()
 }
 function drawColorPicker(){
+    pickerPos = roundVector(pickerPos)
+    console.log(pickerPos)
     buffer1 = colorPickerCtx.getImageData(pickerPos.x-12, pickerPos.y-12, pickerPos.x+12, pickerPos.y+12);
     colorPickerCtx.beginPath();
     colorPickerCtx.arc(pickerPos.x, pickerPos.y, 7.5, 0, 2 * Math.PI);
@@ -254,16 +336,29 @@ function mousemove(event){
                 let dp1 = distance(p1, pos)
                 let dp2 = distance(p2, pos)
                 let dp3 = distance(p3, pos)
+                console.log(['dp', dp1, dp2, dp3])
+                if(dp1 < dp2 && dp1 < dp3) pickerPos = p1
+                if(dp2 < dp1 && dp2 < dp3) pickerPos = p2
+                if(dp3 < dp1 && dp3 < dp2) pickerPos = p3
                 let pp1 = nearestPointToLine(p1, p2, pos)
                 let pp2 = nearestPointToLine(p1, p3, pos)
                 let pp3 = nearestPointToLine(p2, p3, pos)
+                /*colorPickerCtx.strokeStyle='red'
+                colorPickerCtx.beginPath()
+                colorPickerCtx.arc(pp1.x, pp1.y, 3, 0, 2*Math.PI)
+                colorPickerCtx.stroke()*/
+                console.log(['pp', pp1, pp2, pp3])
                 let dpp1 = distance(pp1, pos)
                 let dpp2 = distance(pp2, pos)
                 let dpp3 = distance(pp3, pos)
+                console.log(['dpp', dpp1, dpp2, dpp3])
                 if(dpp1 < dpp2 && dpp1 < dpp3 && isPointOnLine(p1, p2, pp1)) pickerPos = pp1
                 if(dpp2 < dpp1 && dpp2 < dpp3 && isPointOnLine(p1, p3, pp2)) pickerPos = pp2
                 if(dpp3 < dpp1 && dpp3 < dpp2 && isPointOnLine(p2, p3, pp3)) pickerPos = pp3
+                console.log(['pickerpos', pickerPos])
+                pickerPos = roundVector(pickerPos)
                 drawColorPicker()
+                console.log(isPointOnLine(p1, p3, pp2))
             }
         }else if(dragHuePicker){
             delta = polarPos.y - huePickerPos
