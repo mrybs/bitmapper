@@ -11,13 +11,13 @@ let createProjectForm = {
             type: 'number_input',
             id: 'image_width',
             label: 'Ширина холста',
-            value: '32'
+            value: '256'
         },
         {
             type: 'number_input',
             id: 'image_height',
             label: 'Высота холста',
-            value: '32'
+            value: '256'
         },
         {
             type: 'fieldset',
@@ -89,6 +89,21 @@ let createProjectForm = {
                 })
                 window.canvas.render()
                 popup.close()
+
+                if(window.location.hash === '#dev') {
+                    let _start = Date.now() / 1000
+                    for (let i = 0; i < 60; i++) window.canvas.render()
+                    let _cvsfps = 60 / (Date.now() / 1000 - _start)
+
+                    _start = Date.now() / 1000
+                    for (let i = 0; i < 60; i++) colorPickerRender()
+                    let _cpfps = 60 / (Date.now() / 1000 - _start)
+
+                    alert(`${_cvsfps} fps у рабочей области\n${_cpfps} fps у инструмента выбора цвета`)
+
+                    let statusbar = document.getElementById('statusbar')
+                    statusbar.innerHTML += '<span>Development mode</span>'
+                }
             }
         }
     ]
@@ -104,9 +119,4 @@ plugins.forEach(plugin => {
     console.info(`Плагин ${plugin.meta.name} успешно загружен`)
 })
 
-/*
-_start = Date.now() / 1000
-for(let i = 0; i < 60; i++) colorPickerRender()
-alert(`Кадров в секунду ${60/(Date.now() / 1000 - _start)}`)
- */
 colorPickerRender()

@@ -9,7 +9,7 @@ class Canvas{
         for(let yi = 0; yi < this.projectSettings.image_height; yi++){
             this.buffer.push([])
             for(let xi = 0; xi < this.projectSettings.image_width; xi++){
-                this.buffer[this.buffer.length-1].push('#000000')
+                this.buffer[this.buffer.length-1].push([0, 0, 0, 255])
             }
         }
         //this.params = get_params()
@@ -31,7 +31,7 @@ class Canvas{
         setInterval(() => {
             while(this.pointsToDraw.length > 0) {
                 let point = this.pointsToDraw.shift()
-                this.ctx.fillStyle = point.style
+                this.ctx.fillStyle = `rgba(${point.style[0]},${point.style[1]},${point.style[2]},${point.style[3]})`
                 this.ctx.fillRect(point.pos.x * this.canvas.width / this.projectSettings.image_width,
                                   point.pos.y * this.canvas.height / this.projectSettings.image_height,
                                   this.canvas.width / this.projectSettings.image_width,
@@ -147,18 +147,43 @@ class Canvas{
         this.resizeCanvas(params)
         this.locateCanvas(params)
 
-        this.ctx.fillStyle = '#ffffff'
+
+        const imageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
+        const data = imageData.data;
+        /*this.ctx.fillStyle = '#ffffff'
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
 
         for(let yi = 0; yi < this.projectSettings.image_height; yi++){
             for(let xi = 0; xi < this.projectSettings.image_width; xi++){
-                this.ctx.fillStyle = this.buffer[yi][xi]
+                //this.ctx.fillStyle = this.buffer[yi][xi]
+                this.ctx.fillStyle = `rgba(${this.buffer[yi][xi][0]},${this.buffer[yi][xi][1]},${this.buffer[yi][xi][2]},${this.buffer[yi][xi][3]})`
                 this.ctx.fillRect(xi*this.canvas.width/this.projectSettings.image_width,
                     yi*this.canvas.height/this.projectSettings.image_height,
                     this.canvas.width/this.projectSettings.image_width+1,
                     this.canvas.height/this.projectSettings.image_height+1)
             }
+        }*/
+
+        for(let pyi = 0; pyi < this.canvas.height; pyi++){
+            for(let pxi = 0; pxi < this.canvas.width; pxi++){
+                let i = (pyi*this.canvas.width+pxi) * 4
+                let xi = Math.floor(pxi / this.canvas.width * this.projectSettings.image_width)
+                let yi = Math.floor(pyi / this.canvas.height * this.projectSettings.image_height)
+
+                //try{
+                    data[i] = this.buffer[yi][xi][0]
+                    data[i + 1] = this.buffer[yi][xi][1]
+                    data[i + 2] = this.buffer[yi][xi][2]
+                    data[i + 3] = this.buffer[yi][xi][3]
+                /*}catch(e){
+                    console.log(e)
+                    console.log([pxi, pyi, i, xi, yi, this.buffer[yi][xi]])
+                    return
+                }*/
+            }
         }
+
+        this.ctx.putImageData(imageData, 0, 0);
 
         if(params.show_grid){
             this.renderGrid()

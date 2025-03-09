@@ -97,7 +97,6 @@ function nearestPointToLine(a, b, i){
     y = ((a.x - b.x) / (b.y - a.y)) * (x - i.x) + i.y
     return new Vector(x, y)
 }
-
 /*function isPointOnLine(a, b, i){
     //if((b.y - a.y) / (b.x - a.x) * i.x + b.x * (a.y - b.y) / (b.x - a.x) + b.y != i.y) return false
     //let t = (i.x - a.x) / (b.x - a.x)
@@ -230,7 +229,8 @@ function drawColorPicker(){
     colorPickerCtx.arc(pickerPos.x, pickerPos.y, 7.5, 0, 2 * Math.PI);
     let rgb = getTriagnleColor(new Vector(pickerPos.x-25-127, pickerPos.y-25-127));
     colorPickerCtx.fillStyle = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
-    selectedColor = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+    //selectedColor = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+    selectedColor = [rgb[0], rgb[1], rgb[2], 255]
     colorPickerCtx.fill();
     colorPickerCtx.lineWidth = 4;
     colorPickerCtx.strokeStyle = "white";
