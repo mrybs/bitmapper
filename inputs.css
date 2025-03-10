@@ -139,3 +139,6 @@ button{
     padding: 10px;
     user-select: none;
 }
+.button-label{
+    vertical-align: 20%;
+}

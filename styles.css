@@ -12,9 +12,9 @@ html, body{
     background-color: var(--background-color);
     height: max-content;
     display: block;
-    border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
     z-index: 1;
+    transition: transform .5s ease;
 }
 #statusbar{
     z-index: 1;
@@ -89,4 +89,10 @@ a:visited{
 a:hover,
 a:active{
     color: var(--link-select-color);
+}
+#hide_toolpane_btn{
+    color: var(--foreground-color);
+    font-size: 3em;
+    padding: 5px;
+    transition: transform 0.5s ease;
 }

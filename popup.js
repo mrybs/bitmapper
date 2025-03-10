@@ -31,7 +31,7 @@ class Popup{
                     break
                 case 'fieldset':
                     html += `
-                        <fieldset>${this.readForm(input)}</fieldset>
+                        <fieldset><legend>${input.label}</legend>${this.readForm(input)}</fieldset>
                     `
             }
         })

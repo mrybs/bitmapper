@@ -1,4 +1,9 @@
 window.Bitmapper = {
+    toolpane: {
+        hidden: false,
+        toolpane: document.getElementById('toolpane'),
+        hide_button: document.getElementById('hide_toolpane_btn')
+    },
     devtools: {
         enabled: document.location.hash.split('#').includes('dev'),
         devtools: document.getElementById('devtools'),
@@ -162,6 +167,17 @@ document.addEventListener("keypress", (event) => {
         }
     }
 });
+
+window.Bitmapper.toolpane.hide_button.addEventListener('click', (event) => {
+    window.Bitmapper.toolpane.hidden = !window.Bitmapper.toolpane.hidden
+    if(window.Bitmapper.toolpane.hidden){
+        window.Bitmapper.toolpane.toolpane.style.transform = 'translateY(calc(3em - 100%)) translateX(-100%)'
+        window.Bitmapper.toolpane.hide_button.style.transform = 'rotate(180deg) translateX(-350px)'
+    }else{
+        window.Bitmapper.toolpane.toolpane.style.transform = 'translateY(0)'
+        window.Bitmapper.toolpane.hide_button.style.transform = 'rotate(0)'
+    }
+})
 
 
 colorPickerRender()
