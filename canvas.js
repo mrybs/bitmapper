@@ -62,6 +62,12 @@ class Canvas{
         })
         this.canvas.addEventListener('mousemove', event =>{
             event.preventDefault();
+            let pos = windowToCanvas(this.canvas, event.clientX, event.clientY)
+            window.Bitmapper.devtools.cursor_position.innerHTML = `
+                <span class="devtools-sector-header">Позиция под курсором</span><br>
+                X: ${Math.floor(pos.x / this.canvas.width * this.projectSettings.image_width)}<br>
+                Y: ${Math.floor(pos.y / this.canvas.height * this.projectSettings.image_height)}
+            `
             this.move_action(event, 0)
         })
         this.canvas.addEventListener('touchmove', event =>{

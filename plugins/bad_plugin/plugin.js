@@ -1,13 +1,13 @@
-class Plugin{
+class BadPlugin{
     constructor(){
         this.meta = {
-            id: 'plugin-id',
-            name: 'Название плагина',
+            id: 'bad-plugin',
+            name: 'Плохой плагин',
             version: '1.0.0',
             require: []
         }
     }
     load(){
-        //...
+        throw DOMException
     }
 }

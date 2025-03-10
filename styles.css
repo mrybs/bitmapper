@@ -28,6 +28,27 @@ html, body{
     padding: 2px 10px;
     font-size: 16px;
 }
+#devtools{
+    z-index: 1;
+    position: fixed;
+    background-color: var(--devtools-background-color);
+    color: var(--devtools-foreground-color);
+    top: 0;
+    right: 0;
+    padding: 10px;
+    font-family: 'Ubuntu';
+    font-size: 16px;
+    transition: transform 0.5s ease;
+}
+.devtools-sector-header{
+    color: var(--devtools-sector-header-foreground-color);
+}
+.devtools-plugin-load-succeed{
+    color: var(--devtools-plugin-load-succeed-color);
+}
+.devtools-plugin-load-failed{
+    color: var(--devtools-plugin-load-failed-color);
+}
 #colorpicker{
     display: flex;
     margin-inline: auto;
