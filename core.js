@@ -17,9 +17,6 @@ else{
 }
 
 let tab_factory = new TabFactory(document.getElementById('tabs'), document.getElementById('root'))
-tab_factory.createTabHeader('Безымянный', false, (tab_header, event) => {
-    tab_header.tab_header.remove()
-})
 tab_factory.createTab()
 
 let plugins = [

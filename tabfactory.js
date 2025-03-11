@@ -2,17 +2,24 @@ class TabFactory{
     constructor(tab_headers_root, workspace_root){
         this.tab_headers_root = tab_headers_root
         this.workspace_root = workspace_root
+        this.tabs = []
     }
-    createTabHeader(title, selected, onclick){
+    createTabHeader(title, selected, onclick, onclose){
         let tab_header = document.createElement('div')
+        tab_header.classList.add('tab-header')
+        if(selected) tab_header.setAttribute('selected', 'true')
         tab_header.innerHTML = `
-            <div class="tab-header" ${selected ? "selected" : ""}>
-                <span class="tab-header-label">${title}</span>
-                <span class="material-symbols-outlined tab-header-close">close_small</span>
-            </div>
+            <span class="tab-header-label">${title}</span>
+            <span class="material-symbols-outlined tab-header-close">close_small</span>
         `
-        tab_header.getElementsByClassName('tab-header-close')[0].addEventListener('click', (event) => {
+        tab_header.getElementsByClassName('tab-header-label')[0].addEventListener('click', (event) => {
             onclick({
+                title: title,
+                tab_header: tab_header
+            }, event)
+        })
+        tab_header.getElementsByClassName('tab-header-close')[0].addEventListener('click', (event) => {
+            onclose({
                 title: title,
                 tab_header: tab_header
             }, event)
@@ -22,6 +29,7 @@ class TabFactory{
     }
     createTab(){
         let tab = document.createElement('div')
+        let tab_header = null
         tab.classList.add('tab')
         tab.innerHTML = `
             <div class="workspace">
@@ -64,6 +72,23 @@ class TabFactory{
                 canvas: null
             }
         }
+        let data = {
+            tab: tab,
+            tab_header: tab_header,
+            elements: elements,
+            data: tab_data,
+            select: () => {
+                tab_header.setAttribute('selected', 'true')
+                tab.style.display = 'block'
+            },
+            deselect: () => {
+                tab_header.removeAttribute('selected')
+                tab.style.display = 'none'
+            }
+        }
+        
+        tab_data.toolpane.colorpicker = new HSLColorPicker(elements.colorpicker, elements.colorpicker_hex_color)
+        tab_data.toolpane.colorpicker.render()
 
         let createProjectForm = {
             title: 'Создание проекта',
@@ -149,15 +174,23 @@ class TabFactory{
                     action: (event, popup) => {
                         let projectSettings = popup.getValues()
                         console.log(projectSettings)
-                        tab_data.toolpane.colorpicker = new HSLColorPicker(elements.colorpicker, elements.colorpicker_hex_color)
-                        tab_data.toolpane.colorpicker.render()
                         tab_data.editor.canvas = new Canvas(projectSettings, elements.editor, elements.save_button, tab_data.toolpane.colorpicker)
                         //document.title = projectSettings.project_name + ' — Bitmapper'
                         elements.show_grid.addEventListener('input', () => {
                             tab_data.editor.canvas.render()
                         })
                         tab_data.editor.canvas.render()
-
+                        tab_header = this.createTabHeader(projectSettings.project_name, true, 
+                        (tab_header, event) => {
+                            this.deselectAll()
+                            data.select()
+                        },
+                        (tab_header, event) => {
+                            tab.remove()
+                            tab_header.tab_header.remove()
+                        })
+                        this.deselectAll()
+                        data.select()
                         popup.close()
 
                         if(window.location.hash.split('#').includes('benchmark')) {
@@ -195,6 +228,12 @@ class TabFactory{
         })
 
         this.workspace_root.appendChild(tab)
-        return tab
+        this.tabs.push(data)
+        return data
+    }
+    deselectAll(){
+        this.tabs.forEach((tab) => {
+            tab.deselect()
+        })
     }
 }
