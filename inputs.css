@@ -138,7 +138,13 @@ button{
     font-family: 'Ubuntu';
     padding: 10px;
     user-select: none;
+    cursor: pointer;
 }
 .button-label{
     vertical-align: 20%;
+}
+.colorpicker-hex-color{
+    text-align: center;
+    width: 6em;
+    margin-left: calc(50% - 3em) !important;
 }

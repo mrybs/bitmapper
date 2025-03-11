@@ -1,7 +1,9 @@
 class Canvas{
-    constructor(projectSettings){
+    constructor(projectSettings, canvas, saveButton, colorPicker){
         this.projectSettings = projectSettings
-        this.canvas = document.getElementById('editor')
+        this.canvas = canvas
+        this.saveButton = saveButton
+        this.colorPicker = colorPicker
         this.ctx = this.canvas.getContext('2d')
         this.canvasPosOffset = new Vector(0,0)
         this.zoom = 1
@@ -27,6 +29,12 @@ class Canvas{
         this.checkboxes = {
             show_grid: document.getElementById('show_grid')
         }
+
+        window.Bitmapper.devtools.canvas_size.innerHTML = `
+            <span class="devtools-sector-header">Размер рабочей области</span><br>
+            Ширина: ${this.projectSettings.image_width}<br>
+            Высота: ${this.projectSettings.image_height}
+        `
 
         setInterval(() => {
             while(this.pointsToDraw.length > 0) {
@@ -96,7 +104,7 @@ class Canvas{
         })
 
 
-        document.getElementById('save_button').addEventListener('click', () => {
+        saveButton.addEventListener('click', () => {
             this.render()
             const link = document.createElement('a');
             link.download = 'canvas_image.png';
@@ -106,7 +114,7 @@ class Canvas{
         });
     }
     setPixel(pos, style){
-        this.pointsToDraw.push({pos: pos, style:style})
+        this.pointsToDraw.push({pos: pos, style: style})
     }
     get_drawingSettings(){
         let drawingSettings = {}
@@ -208,7 +216,7 @@ class Canvas{
         let err = dx - dy;
 
         while (true) {
-            this.currentBrush.draw(new Vector(x0, y0), selectedColor)
+            this.currentBrush.draw(new Vector(x0, y0), this.colorPicker.getColorRGB())
 
             if(x0 === x1 && y0 === y1) break;
 
@@ -247,8 +255,8 @@ class Canvas{
         if(this.leftPressed){
             let currentPoint = new Vector(Math.floor(pos.x/this.canvas.width*this.projectSettings.image_width),
                 Math.floor(pos.y / this.canvas.height * this.projectSettings.image_height))
-            if (this.lastPoint != null) this.drawLine(currentPoint, this.lastPoint, selectedColor)
-            else this.currentBrush.draw(currentPoint, selectedColor)
+            if (this.lastPoint != null) this.drawLine(currentPoint, this.lastPoint, this.colorPicker.getColorRGB())
+            else this.currentBrush.draw(currentPoint, this.colorPicker.getColorRGB())
             this.lastPoint = structuredClone(currentPoint)
         }
     }

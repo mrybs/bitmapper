@@ -3,4 +3,7 @@ class Vector{
         this.x = x
         this.y = y
     }
+    round(){
+        return new Vector(Math.round(this.x), Math.round(this.y))
+    }
 }

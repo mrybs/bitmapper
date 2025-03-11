@@ -1,0 +1,20 @@
+.tab-header{
+    cursor: pointer;
+    user-select: none;
+}
+.tab-header-label{
+    vertical-align: top;
+}
+.tab-header-close{
+    border-radius: 11px;
+    width: 22px;
+    height: 22px;
+    margin: 2px;
+    transition: background-color .2s ease;
+    text-align: center;
+    font-size: 22px;
+    transform: translateY(-2px);
+}
+.tab-header-close:hover{
+    background-color: var(--inputs-background-color);
+}

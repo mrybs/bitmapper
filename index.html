@@ -4,46 +4,49 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Bitmapper</title>
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close_small,file_export,home,keyboard_double_arrow_up" />
+
         <link href="imports.css" rel="stylesheet">
         <link href="pallete.css" rel="stylesheet">
         <link href="inputs.css" rel="stylesheet">
         <link href="styles.css" rel="stylesheet">
         <link href="popup.css" rel="stylesheet">
-        
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=file_export,keyboard_double_arrow_up" />
-        
+        <link href="tabs.css" rel="stylesheet">
     </head>
     <body>
-        <div id="workspace">
-            <div id="toolpane">
-                <div class="input-wrapper"><input type="checkbox" id="show_grid"><label for="show_grid">Показать сетку</label></div>
-                <button id="save_button"><span class="material-symbols-outlined">file_export</span> <span class="button-label">Экспорт на устройство</span></button>
-                <div>
-                    <canvas id="colorpicker"></canvas>
+        <div id="root">
+            <div id="tabs">
+                <div class="tab-header" selected>
+                    <span class="tab-header-label">Безымянный</span>
+                    <span class="material-symbols-outlined tab-header-close">close_small</span>
                 </div>
-                <span id="hide_toolpane_btn" class="material-symbols-outlined">keyboard_double_arrow_up</span>
+                <div class="tab-header">
+                    <span class="tab-header-label">Безымянный2</span>
+                    <span class="material-symbols-outlined tab-header-close">close_small</span>
+                </div>
+
             </div>
             <div id="statusbar">
                 Alpha
-                110325b
+                120325a
                 <a target="_blank" href="https://github.com/mrybs/bitmapper">GitHub</a>
                 <a target="_blank" href="https://t.me/mrybspublicmatrixchat">Telegram</a>
             </div>
-            <canvas id="editor">
-                Ваш браузер не поддерживает Canvas. Работа редактора невозможна
-            </canvas>
             <div id="devtools">
-                <div id="devtools-cursor-position"></div><br>
                 <div id="devtools-successfully-loaded-plugins"></div>
-                <div id="devtools-failed-to-load-plugins"></div>
+                <div id="devtools-failed-to-load-plugins"></div><br>
+                <div id="devtools-cursor-position"></div>
+                <div id="devtools-canvas-size"></div>
             </div>
         </div>
         <script src="plugins/plugin.js"></script>
         <script src="plugins/bad_plugin/plugin.js"></script>
         <script src="vector.js"></script>
+        <script src="tabfactory.js"></script>
         <script src="brush.js"></script>
         <script src="plugins/core/brushes/squared.js"></script>
-        <script src="colorpicker.js"></script>
+        <script src="hsl_colorpicker.js"></script>
         <script src="canvas.js"></script>
         <script src="popup.js"></script>
         <script src="core.js"></script>
