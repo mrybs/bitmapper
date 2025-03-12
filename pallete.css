@@ -1,14 +1,16 @@
 :root{
     --accent-color: #F39F18;
+
     --foreground-color: #ffffff;
-    --inputs-background-color: #424242;
-    --workspace-background-color: #101010;
-    --background-color: #212121;
-    --highlighted-background-color: #272727;
     --link-color: #F39F18;
     --link-select-color: #FFBD34;
-    --devtools-foreground-color: #ffffff7c;
+    --background-color: #212121;
+    --inputs-background-color: #424242;
+    --workspace-background-color: #101010;
+    --highlighted-background-color: #272727;
+
     --devtools-background-color: #2121217c;
+    --devtools-foreground-color: #ffffff7c;
     --devtools-sector-header-foreground-color: #189FF37c;
     --devtools-plugin-load-succeed-color: #18f3187c;
     --devtools-plugin-load-failed-color: #f318187c;

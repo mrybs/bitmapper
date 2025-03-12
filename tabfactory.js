@@ -12,7 +12,7 @@ class TabFactory{
             <span class="tab-header-label">${title}</span>
             <span class="material-symbols-outlined tab-header-close">close_small</span>
         `
-        tab_header.getElementsByClassName('tab-header-label')[0].addEventListener('click', (event) => {
+        tab_header.addEventListener('click', (event) => {
             onclick({
                 title: title,
                 tab_header: tab_header

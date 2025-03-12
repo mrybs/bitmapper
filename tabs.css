@@ -1,6 +1,40 @@
+#tabs{
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 40px;
+    background-color: var(--background-color);
+    display: flex;
+    padding-left: 7px;
+    padding-right: 7px;
+    justify-content: flex-start;
+}
 .tab-header{
     cursor: pointer;
     user-select: none;
+    font-family: 'Ubuntu';
+    padding: 2px 10px;
+    margin: 7px 7px 0;
+    font-size: 16px;
+    text-align: center;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+    border-radius: 13px;
+    transition: margin .2s ease, background-color .2s ease, border .2s ease;
+    max-width: 250px;
+    flex-grow: 100;
+}
+.tab-header:hover{
+    margin: 7px;
+    background-color: var(--highlighted-background-color);
+}
+.tab-header[selected]{
+    margin: 0 7px 7px 7px;
+    background-color: var(--inputs-background-color);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: 3px solid var(--accent-color);
 }
 .tab-header-label{
     vertical-align: top;
@@ -17,4 +51,13 @@
 }
 .tab-header-close:hover{
     background-color: var(--inputs-background-color);
+}
+#create-tab-btn{
+    order: 999999999;
+    margin: 7px;
+    width: 26px;
+    height: 26px;
+    border-radius: 13px;
+    font-size: 16px;
+    padding: 5px;
 }
