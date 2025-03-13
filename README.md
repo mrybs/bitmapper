@@ -21,6 +21,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/mrybs/bitmapper)
 ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/mrybs/bitmapper)
 
+## Использование
 ### Управление
 - Рисовать на холсте ЛКМ или просто одним пальцем.
 - Перемещать холст ПКМ, с тач-экранов никак.
@@ -29,6 +30,7 @@
 Горячие клавиши(пока одна):
 ![hotkeys](hotkeys.png "Горячие клавиши")
 
+## Модификация
 ### Плагины
 Все плагины представляют собой .js файлы с классом, унаследованным от Plugin https://github.com/mrybs/bitmapper/blob/master/plugins/plugin.js .
 
