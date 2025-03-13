@@ -22,17 +22,17 @@
 ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/mrybs/bitmapper)
 
 ### Управление
-Рисовать на холсте ЛКМ или просто одним пальцем
+Рисовать на холсте ЛКМ или просто одним пальцем.
 
-Перемещать холст ПКМ, со тач-экранов никак
+Перемещать холст ПКМ, с тач-экранов никак.
 
-Масштабировать холст колесиком мыши, со тач-экранов никак
+Масштабировать холст колесиком мыши, с тач-экранов никак.
 
 Горячие клавиши(пока одна):
 ![hotkeys](hotkeys.png "Горячие клавиши")
 
 ### Плагины
-Все плагины представляют собой .js файлы с классом, унаследованным от Plugin https://github.com/mrybs/bitmapper/blob/master/plugins/plugin.js
+Все плагины представляют собой .js файлы с классом, унаследованным от Plugin https://github.com/mrybs/bitmapper/blob/master/plugins/plugin.js .
 
 В каждом классе плагина должно присутствовать поле meta:
 ```js
@@ -44,9 +44,9 @@ Plugin.meta = {
 }
 ```
 
-Также в плагине должен присутствовать метод load, отвечающий за загрузку плагина
+Также в плагине должен присутствовать метод load, отвечающий за загрузку плагина.
 
-Собственно вот хелоуворлд плагин
+Собственно вот хелоуворлд плагин:
 
 ```js
 class MyFirstPlugin extends Plugin{
@@ -66,10 +66,10 @@ class MyFirstPlugin extends Plugin{
 }
 ```
 
-Здесь alert `Hello, world!` выполняется через setTimeout с задержкой 0 дабы не занимать основой поток. В будущих сборках битмаппера будут ограничения по времени загрузки плагина, поэтому работа плагина может быть нарушена
+Здесь alert `Hello, world!` выполняется через setTimeout с задержкой 0 дабы не занимать основой поток. В будущих сборках битмаппера будут ограничения по времени загрузки плагина, поэтому работа плагина может быть нарушена.
 
 ### Кисти
-Все кисти представляют собой классы, унаследованные от Brush https://github.com/mrybs/bitmapper/blob/master/brush.js
+Все кисти представляют собой классы, унаследованные от Brush https://github.com/mrybs/bitmapper/blob/master/brush.js .
 
 В каждой кисти должно присутствовать поле meta:
 
@@ -84,7 +84,7 @@ Brush.meta = {
 
 Рисованием занимается метод кисти draw. Он принимает в качестве аргументов pos позицию рабочей области на которой была использована кисть и color цвет кисти. 
 
-Собственно вот пример кисти, которая рисует квадраты заданных размеров size в конструкторе
+Собственно вот пример кисти, которая рисует квадраты заданных размеров size в конструкторе:
 
 ```js
 class SquaredBrush extends Brush{
@@ -97,12 +97,11 @@ class SquaredBrush extends Brush{
     draw(pos, style){
         for(let yi = 0; yi < this.size; yi++){
             for(let xi = 0; xi < this.size; xi++){
-                if(this.size % 2 === 1) this.canvas.setPixel(new Vector(Math.round(pos.x-this.size/2+xi), Math.round(pos.y-this.size/2+yi)), style)
-                else this.canvas.setPixel(new Vector(Math.round(pos.x-this.size/2+xi+0.25), Math.round(pos.y-this.size/2+yi+0.25)), style)
+                this.canvas.setPixel(new Vector(Math.round(pos.x-this.size/2+xi), Math.round(pos.y-this.size/2+yi)), style)
             }
         }
     }
 }
 ```
 
-Кисть должна устанавливаться с помощью плагина, но на этом развитие остановилось, ждём новых сборок битмаппера
+Кисть должна устанавливаться с помощью плагина, но на этом развитие остановилось, ждём новых сборок битмаппера.
