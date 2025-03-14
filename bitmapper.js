@@ -1,6 +1,6 @@
-var ROOT = 'https://raw.githubusercontent.com/mrybs/bitmapper/refs/heads/master/'
-//var ROOT = ''
-var VERSION = 'Alpha 140325f'
+//var ROOT = 'https://raw.githubusercontent.com/mrybs/bitmapper/refs/heads/master/'
+var ROOT = ''
+var VERSION = 'Alpha 140325g'
 
 function import_global_style(path){
     let link = document.createElement('link')
