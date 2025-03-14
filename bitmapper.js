@@ -1,12 +1,11 @@
 var ROOT = 'https://raw.githubusercontent.com/mrybs/bitmapper/refs/heads/master/'
 //var ROOT = ''
-var VERSION = 'Alpha 140325e'
+var VERSION = 'Alpha 140325f'
 
 function import_global_style(path){
     let link = document.createElement('link')
-    link.rel = 'stylesheet'
-    link.type = 'text/css'
     link.href = path
+    link.rel = 'stylesheet'
     document.getElementsByTagName('head')[0].appendChild(link);
 }
 
