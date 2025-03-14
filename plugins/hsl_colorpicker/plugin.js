@@ -1,3 +1,22 @@
+class HSLColorPickerPlugin extends Plugin {
+    constructor() {
+        super();
+        this.meta = {
+            id: 'mrybs.hsl-colorpicker',
+            name: 'HSL Colorpicker',
+            version: '0.0.1',
+            author: 'Mr. Ybs',
+            require: [
+                'mrybs.core'
+            ]
+        }
+    }
+
+    load(){
+        this.HSLColorPicker = HSLColorPicker
+    }
+}
+
 function toPolar(p){
     theta = Math.atan(p.y/p.x)
     if(p.x < 0 && p.y === 0) theta += Math.PI

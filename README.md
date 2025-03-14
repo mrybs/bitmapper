@@ -29,20 +29,26 @@
 - Перемещать холст ПКМ, с тач-экранов никак.
 - Масштабировать холст колесиком мыши, с тач-экранов никак.
 
-Горячие клавиши(пока одна):
+**Горячие клавиши(пока одна):**
 
 <img src="docs/images/hotkeys.png" alt="Горячие клавиши" style="width: 98%"/>
 
 ## Модификация
-### Плагины
-Все плагины представляют собой .js файлы с классом, унаследованным от Plugin https://github.com/mrybs/bitmapper/blob/master/plugins/plugin.js .
+
+- [Плагины](#mods-plugins)
+- [Кисти](#mods-brushes)
+- [Инструменты разработчика](#mods-devtools)
+
+### <a id="mods-plugins">Плагины</a>
+Все плагины представляют собой .js файлы с классом, унаследованным от Plugin https://github.com/mrybs/bitmapper/blob/master/plugins/plugin.js
 
 В каждом классе плагина должно присутствовать поле meta:
 ```js
 Plugin.meta = {
-    id: 'plugin-id',
+    id: 'author.plugin-id',
     name: 'Название плагина',
     version: '1.0.0',
+    author: 'Автор плагина',
     require: []
 }
 ```
@@ -54,10 +60,12 @@ Plugin.meta = {
 ```js
 class MyFirstPlugin extends Plugin{
     constructor(){
+        super()
         this.meta = {
-            id: 'my-first-plugin',
+            id: 'mrybs.my-first-plugin',
             name: 'Мой первый плагин',
             version: '0.0.1',
+            author: 'Mr. Ybs',
             require: []
         }
     }
@@ -72,14 +80,14 @@ class MyFirstPlugin extends Plugin{
 > [!IMPORTANT]
 > Здесь alert `Hello, world!` выполняется через setTimeout с задержкой 0 дабы не занимать основой поток. В будущих сборках битмаппера будут ограничения по времени загрузки плагина, поэтому работа плагина может быть нарушена.
 
-### Кисти
-Все кисти представляют собой классы, унаследованные от Brush https://github.com/mrybs/bitmapper/blob/master/brush.js .
+### <a id="mods-brushes">Кисти</a>
+Все кисти представляют собой классы, унаследованные от Brush https://github.com/mrybs/bitmapper/blob/master/brush.js
 
 В каждой кисти должно присутствовать поле meta:
 
 ```js
 Brush.meta = {
-    id: 'brush',
+    id: 'mrybs.my-first-brush-plugin.brush',
     name: 'Кисть'
 }
 ```
@@ -101,7 +109,10 @@ class SquaredBrush extends Brush{
     draw(pos, style){
         for(let yi = 0; yi < this.size; yi++){
             for(let xi = 0; xi < this.size; xi++){
-                this.canvas.setPixel(new Vector(Math.round(pos.x-this.size/2+xi), Math.round(pos.y-this.size/2+yi)), style)
+                this.canvas.setPixel(
+                    new Vector(pos.x-this.size/2+xi, pos.y-this.size/2+yi).round(), 
+                    style
+                )
             }
         }
     }
@@ -109,4 +120,54 @@ class SquaredBrush extends Brush{
 ```
 
 > [!NOTE]
-> Кисть должна устанавливаться с помощью плагина, но на этом развитие остановилось, ждём новых сборок битмаппера.
+> Кисть должна устанавливаться с помощью плагина
+
+```js
+class SquaredBrushPlugin extends Plugin{
+    constructor(){
+        super()
+        this.meta = {
+            id: 'mrybs.squared-brush-plugin',
+            name: 'Плагин квадратной кисти',
+            version: '1.0.0',
+            author: 'Mr. Ybs',
+            require: [
+                'mrybs.core'
+            ]
+        }
+    }
+    
+    load(){
+        this.loadBrush(SquaredBrush)
+    }
+}
+```
+
+Здесь в `require` указан плагин `mrybs.core`, без него ничего работать не будет — это основной плагин на котором работает битмаппер
+
+### <a id="mods-devtools">Инструменты разработчика</a>
+
+Чтобы открыть инструменты разработчика есть два способа:
+
+- Нажать `ъ` или `]`(как обозначено на клавиатуре в начале документа)
+- В адресной строке после ссылки прописать `#dev` и обновить страницу
+
+<div>
+  <img src="docs/images/devtools1.png" alt="Инструменты разработчика 1" style="width: 47%"/>
+  <img src="docs/images/devtools2.png" alt="Инструменты разработчика 2" style="width: 51%"/>
+</div>
+
+- В инструментах разработчика указаны загруженные плагины в формате `Имя Версия`
+- Проблемные плагины указаны в отдельной секции и подсвечены определенным цветом в зависимости от типа проблемы:
+
+  - Красный — ошибка при загрузке
+  - Оранжевый — нет какой-либо зависимости
+  - Желтый — при загрузке зависимости возникла ошибка
+  - Фиолетовый — загрузка плагина вышла из лимита по времени
+
+- Следующая секция показывает координату пикселя рабочей области под курсором. Эта секция появится только при наведении курсора на рабочую область, поэтому на устройствах с тач-экранами ее не будет
+- Последняя секция выводит размер текущей рабочей области в пикселях
+
+Также некоторая информация выводится в консоль(например, статус плагинов, вывод конкретных ошибок):
+
+<img src="docs/images/console.png" alt="Консоль" style="width: 98%"/>

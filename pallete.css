@@ -14,5 +14,7 @@
     --devtools-foreground-color: #ffffff7c;
     --devtools-sector-header-foreground-color: #189FF37c;
     --devtools-plugin-load-succeed-color: #18f3187c;
+    --devtools-plugin-dependency-load-failed-color: #f3f3187c;
+    --devtools-plugin-no-dependency-color: #f37c187c;
     --devtools-plugin-load-failed-color: #f318187c;
 }

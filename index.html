@@ -11,40 +11,57 @@
         <link href="pallete.css" rel="stylesheet">
         <link href="inputs.css" rel="stylesheet">
         <link href="styles.css" rel="stylesheet">
-        <link href="popup.css" rel="stylesheet">
-        <link href="tabs.css" rel="stylesheet">
+        <link href="plugins/core/styles/popup.css" rel="stylesheet">
+        <link href="plugins/tab_factory/styles/tabs.css" rel="stylesheet">
     </head>
     <body>
         <div id="root">
-            <div id="tabs"><button onclick="tab_factory.createTab()" id="create-tab-btn">+</button></div>
+            <div id="tabs"><button onclick="window.Bitmapper.tab_factory.createTab()" id="create-tab-btn">+</button></div>
             <div id="statusbar">
                 Alpha
-                140325b
+                140325c
                 <a target="_blank" href="https://github.com/mrybs/bitmapper">GitHub</a>
                 <a target="_blank" href="https://t.me/mrybspublicmatrixchat">Telegram</a>
             </div>
             <div id="devtools">
-                <div id="devtools-successfully-loaded-plugins"></div>
-                <div id="devtools-failed-to-load-plugins"></div><br>
+                <div id="devtools-successfully-loaded-plugins">
+                    <span class="devtools-sector-header">Загруженные плагины</span><br>
+                </div>
+                <div id="devtools-failed-to-load-plugins">
+                    <span class="devtools-sector-header">Проблемные плагины</span><br>
+                </div><br>
                 <div id="devtools-cursor-position"></div>
                 <div id="devtools-canvas-size"></div>
             </div>
         </div>
-        <script src="plugins/plugin.js"></script>
-        <script src="plugins/bad_plugin/plugin.js"></script>
+
         <script src="vector.js"></script>
-        <script src="tabfactory.js"></script>
-        <script src="brush.js"></script>
+        <script src="plugins/plugin.js"></script>
+        <script src="plugins/core/brushes/brush.js"></script>
+
+        <script src="globals.js"></script>
+
+        <script src="plugins/bad_plugin/plugin.js"></script>
         <script src="plugins/core/brushes/squared.js"></script>
-        <script src="hsl_colorpicker.js"></script>
-        <script src="canvas.js"></script>
-        <script src="popup.js"></script>
-        <script src="core.js"></script>
+        <script src="plugins/core/plugin.js"></script>
+
+        <script src="plugins/hsl_colorpicker/plugin.js"></script>
+        <script src="plugins/canvas/plugin.js"></script>
         <script src="plugin_loader.js"></script>
+
+        <script src="plugins/core/popup.js"></script>
+        <script src="plugins/tab_factory/plugin.js"></script>
+
         <script>
             initPlugin(Plugin)  // Плагин-пустышка
             initPlugin(BadPlugin)  // "Поломанный" плагин, вызывает ошибку при загрузке
+            initPlugin(TabFactoryPlugin)
+            initPlugin(HSLColorPickerPlugin)
+            initPlugin(CanvasPlugin)
+            initPlugin(CorePlugin)  // Главный плагин
             loadPlugins()
         </script>
+
+        <script src="devtools.js"></script>
     </body>
 </html>

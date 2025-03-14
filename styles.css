@@ -53,6 +53,12 @@ html, body{
 .devtools-plugin-load-succeed{
     color: var(--devtools-plugin-load-succeed-color);
 }
+.devtools-plugin-dependency-load-failed{
+    color: var(--devtools-plugin-dependency-load-failed-color);
+}
+.devtools-plugin-no-dependency{
+    color: var(--devtools-plugin-no-dependency-color);
+}
 .devtools-plugin-load-failed{
     color: var(--devtools-plugin-load-failed-color);
 }

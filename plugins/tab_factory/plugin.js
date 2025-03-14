@@ -1,4 +1,25 @@
-class TabFactory{
+class TabFactoryPlugin extends Plugin {
+    constructor() {
+        super();
+        this.meta = {
+            id: 'mrybs.tab-factory',
+            name: 'Tab Factory',
+            version: '0.0.1',
+            author: 'Mr. Ybs',
+            require: [
+                'mrybs.hsl-colorpicker',
+                'mrybs.canvas'
+            ]
+        }
+    }
+
+    load(){
+        this.TabFactory = TabFactory
+    }
+}
+
+
+class TabFactory {
     constructor(tab_headers_root, workspace_root){
         this.tab_headers_root = tab_headers_root
         this.workspace_root = workspace_root
@@ -80,6 +101,12 @@ class TabFactory{
             select: () => {
                 tab_header.setAttribute('selected', 'true')
                 tab.style.display = 'block'
+
+                window.Bitmapper.devtools.canvas_size.innerHTML = `
+                    <span class="devtools-sector-header">Размер рабочей области</span><br>
+                    Ширина: ${tab_data.editor.canvas.projectSettings.image_width}<br>
+                    Высота: ${tab_data.editor.canvas.projectSettings.image_height}
+                `
             },
             deselect: () => {
                 tab_header.removeAttribute('selected')
@@ -87,7 +114,7 @@ class TabFactory{
             }
         }
         
-        tab_data.toolpane.colorpicker = new HSLColorPicker(elements.colorpicker, elements.colorpicker_hex_color)
+        tab_data.toolpane.colorpicker = new window.Bitmapper.plugins['mrybs.hsl-colorpicker'].HSLColorPicker(elements.colorpicker, elements.colorpicker_hex_color)
         tab_data.toolpane.colorpicker.render()
 
         let createProjectForm = {
@@ -174,7 +201,7 @@ class TabFactory{
                     action: (event, popup) => {
                         let projectSettings = popup.getValues()
                         console.log(projectSettings)
-                        tab_data.editor.canvas = new Canvas(projectSettings, elements.editor, elements.save_button, tab_data.toolpane.colorpicker)
+                        tab_data.editor.canvas = new window.Bitmapper.plugins['mrybs.canvas'].Canvas(projectSettings, elements.editor, elements.save_button, tab_data.toolpane.colorpicker)
                         //document.title = projectSettings.project_name + ' — Bitmapper'
                         elements.show_grid.addEventListener('input', () => {
                             tab_data.editor.canvas.render()

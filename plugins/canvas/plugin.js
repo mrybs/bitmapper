@@ -1,3 +1,23 @@
+class CanvasPlugin extends Plugin {
+    constructor() {
+        super();
+        this.meta = {
+            id: 'mrybs.canvas',
+            name: 'Canvas',
+            version: '0.0.1',
+            author: 'Mr. Ybs',
+            require: [
+                'mrybs.core',
+                'mrybs.hsl-colorpicker'
+            ]
+        }
+    }
+
+    load(){
+        this.Canvas = Canvas
+    }
+}
+
 class Canvas{
     constructor(projectSettings, canvas, saveButton, colorPicker){
         this.projectSettings = projectSettings
@@ -15,7 +35,7 @@ class Canvas{
             }
         }
         //this.params = get_params()
-        this.currentBrush = new Brush(this, 1)
+        this.currentBrush = new window.Bitmapper.brushes['mrybs.brush'](this, 1)
         this.pointsToDraw = []
         this.maxFramerate = 165
         this.leftPressed = false
@@ -30,21 +50,15 @@ class Canvas{
             show_grid: document.getElementById('show_grid')
         }
 
-        window.Bitmapper.devtools.canvas_size.innerHTML = `
-            <span class="devtools-sector-header">Размер рабочей области</span><br>
-            Ширина: ${this.projectSettings.image_width}<br>
-            Высота: ${this.projectSettings.image_height}
-        `
-
         setInterval(() => {
             while(this.pointsToDraw.length > 0) {
                 let point = this.pointsToDraw.shift()
-                this.ctx.fillStyle = `rgba(${point.style[0]},${point.style[1]},${point.style[2]},${point.style[3]})`
+                this.ctx.fillStyle = `rgba(${point.color[0]},${point.color[1]},${point.color[2]},${point.color[3]})`
                 this.ctx.fillRect(point.pos.x * this.canvas.width / this.projectSettings.image_width,
                                   point.pos.y * this.canvas.height / this.projectSettings.image_height,
                                   this.canvas.width / this.projectSettings.image_width,
                                   this.canvas.height / this.projectSettings.image_height)
-                this.buffer[point.pos.y][point.pos.x] = point.style
+                this.buffer[point.pos.y][point.pos.x] = point.color
             }
         }, 1/this.maxFramerate)
 
@@ -113,8 +127,8 @@ class Canvas{
             link.remove();
         });
     }
-    setPixel(pos, style){
-        this.pointsToDraw.push({pos: pos, style: style})
+    setPixel(pos, color){
+        this.pointsToDraw.push({pos: pos, color: color})
     }
     get_drawingSettings(){
         let drawingSettings = {}

@@ -1,13 +1,15 @@
-class BadPlugin{
+class BadPlugin extends Plugin{
     constructor(){
+        super()
         this.meta = {
-            id: 'bad-plugin',
+            id: 'mrybs.bad-plugin',
             name: 'Плохой плагин',
             version: '1.0.0',
+            author: 'Mr. Ybs',
             require: []
         }
     }
     load(){
-        throw DOMException
+        throw new Error()
     }
 }
