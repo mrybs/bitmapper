@@ -21,7 +21,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/mrybs/bitmapper)
 ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/mrybs/bitmapper)
 
-<img src="docs/images/screenshot.png" alt="Сам редактор" style="width: 60%"/>
+<img src="docs/images/screenshot.png" alt="Сам редактор" style="width: 98%"/>
 
 ## Использование
 ### Управление
@@ -31,7 +31,7 @@
 
 Горячие клавиши(пока одна):
 
-<img src="docs/images/hotkeys.png" alt="Горячие клавиши" style="width: 60%"/>
+<img src="docs/images/hotkeys.png" alt="Горячие клавиши" style="width: 98%"/>
 
 ## Модификация
 ### Плагины
