@@ -1,6 +1,8 @@
 # Bitmapper
 Пиксельный редактор(пока что рисовалка :bowtie:)
 
+[mrybs.github.io/bitmapper](https://mrybs.github.io/bitmapper/)
+
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mrybs/bitmapper/static.yml)
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/mrybs/bitmapper)
@@ -38,6 +40,7 @@
 - [Плагины](#mods-plugins)
 - [Кисти](#mods-brushes)
 - [Инструменты разработчика](#mods-devtools)
+- [Тест производительности](#mods-benchmark)
 
 ### <a id="mods-plugins">Плагины</a>
 Все плагины представляют собой .js файлы с классом, унаследованным от Plugin https://github.com/mrybs/bitmapper/blob/master/plugins/plugin.js
@@ -150,7 +153,7 @@ class SquaredBrushPlugin extends Plugin{
 Чтобы открыть инструменты разработчика есть два способа:
 
 - Нажать `ъ` или `]`(как обозначено на клавиатуре в начале документа)
-- В адресной строке после ссылки прописать `#dev` и обновить страницу
+- В адресной строке в конце ссылки прописать `#dev` и обновить страницу
 
 <div>
   <img src="docs/images/devtools1.png" alt="Инструменты разработчика 1" style="width: 47%"/>
@@ -171,3 +174,10 @@ class SquaredBrushPlugin extends Plugin{
 Также некоторая информация выводится в консоль(например, статус плагинов, вывод конкретных ошибок):
 
 <img src="docs/images/console.png" alt="Консоль" style="width: 98%"/>
+
+### <a id="mods-benchmark">Тест производительности</a>
+
+Если в адресной строке в конце ссылки прописать `#benchmark` и обновить страницу, то после создания проекта запустится тестирование частоты кадров отрисовки инструмента выбора цвета и отрисовки рабочей области.
+Это также можно использовать с плагинами в каких-то своих целях
+
+

@@ -16,4 +16,9 @@ class Plugin{
     loadBrush(brush){
         window.Bitmapper.brushes[(new brush()).meta.id] = brush
     }
+
+    benchmark(){
+        //...
+        return false
+    }
 }

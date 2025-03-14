@@ -94,7 +94,6 @@ fieldset>*{
     z-index: 0;
     cursor: crosshair;
 }
-
 a:link,
 a:visited{
     color: var(--link-color);

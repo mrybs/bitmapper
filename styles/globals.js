@@ -1,6 +1,7 @@
 window.Bitmapper = {
     plugins: {},
     brushes: {},
+    flags: document.location.hash.split('#'),
     devtools: {
         enabled: document.location.hash.split('#').includes('dev'),
         devtools: document.getElementById('devtools'),

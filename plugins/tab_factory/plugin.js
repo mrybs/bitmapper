@@ -226,7 +226,7 @@ class TabFactory {
 
                         if(window.location.hash.split('#').includes('benchmark')) {
                             let _start = Date.now() / 1000
-                            for (let i = 0; i < 60; i++) window.canvas.render()
+                            for (let i = 0; i < 60; i++) tab_data.editor.canvas.render()
                             let _cvsfps = 60 / (Date.now() / 1000 - _start)
 
                             _start = Date.now() / 1000

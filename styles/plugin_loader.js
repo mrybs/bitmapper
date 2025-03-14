@@ -30,6 +30,14 @@ function loadPlugins(){
             plugin.load()
             console.info(`Плагин ${plugin.meta.name} ${plugin.meta.version} успешно загружен`)
             window.Bitmapper.devtools.successfully_loaded_plugins.innerHTML += `<span class="devtools-plugin-load-succeed">${plugin.meta.name} ${plugin.meta.version}</span><br>`
+
+            if(window.Bitmapper.flags.includes('benchmark')){
+                try{
+                    if(plugin.benchmark()) console.info(`Плагин ${plugin.meta.name} ${plugin.meta.version} успешно протестирован на производительность`)
+                }catch(e){
+                    console.info(`При тестировании плагина ${plugin.meta.name} ${plugin.meta.version} на производительность произошла ошибка:\n${e}`)
+                }
+            }
         }catch(e){
             console.info(`При загрузке плагина ${plugin.meta.name} ${plugin.meta.version} произошла ошибка:\n${e}`)
             window.Bitmapper.devtools.failed_to_load_plugins.innerHTML += `<span class="devtools-plugin-load-failed">${plugin.meta.name} ${plugin.meta.version}</span><br>`
