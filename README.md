@@ -46,7 +46,7 @@
 Все плагины представляют собой .js файлы с классом, унаследованным от Plugin https://github.com/mrybs/bitmapper/blob/master/plugins/plugin.js
 
 В каждом классе плагина должно присутствовать поле meta:
-```js
+```javascript
 Plugin.meta = {
     id: 'author.plugin-id',
     name: 'Название плагина',
@@ -60,7 +60,7 @@ Plugin.meta = {
 
 Собственно вот хелоуворлд плагин:
 
-```js
+```javascript
 class MyFirstPlugin extends Plugin{
     constructor(){
         super()
@@ -88,7 +88,7 @@ class MyFirstPlugin extends Plugin{
 
 В каждой кисти должно присутствовать поле meta:
 
-```js
+```javascript
 Brush.meta = {
     id: 'mrybs.my-first-brush-plugin.brush',
     name: 'Кисть'
@@ -101,12 +101,13 @@ Brush.meta = {
 
 Собственно вот пример кисти, которая рисует квадраты заданных размеров size в конструкторе:
 
-```js
+```javascript
 class SquaredBrush extends Brush{
     constructor(canvas, size){
         super(canvas, size)
         this.meta = {
-            'name': 'Квадратная кисть'
+            id: 'mrybs.squared-brush',
+            name: 'Квадратная кисть'
         }
     }
     draw(pos, style){
@@ -125,7 +126,7 @@ class SquaredBrush extends Brush{
 > [!NOTE]
 > Кисть должна устанавливаться с помощью плагина
 
-```js
+```javascript
 class SquaredBrushPlugin extends Plugin{
     constructor(){
         super()
@@ -152,7 +153,7 @@ class SquaredBrushPlugin extends Plugin{
 
 Чтобы открыть инструменты разработчика есть два способа:
 
-- Нажать `ъ` или `]`(как обозначено на клавиатуре в начале документа)
+- Нажать `]` или `ъ` (как обозначено на клавиатуре в начале документа)
 - В адресной строке в конце ссылки прописать `#dev` и обновить страницу
 
 <div>
@@ -160,7 +161,9 @@ class SquaredBrushPlugin extends Plugin{
   <img src="docs/images/devtools2.png" alt="Инструменты разработчика 2" style="width: 51%"/>
 </div>
 
-- В инструментах разработчика указаны загруженные плагины в формате `Имя Версия`
+Инструменты разработчика состоят из 4-ёх секций:
+
+- В первой секции указаны загруженные плагины в формате `Имя Версия`
 - Проблемные плагины указаны в отдельной секции и подсвечены определенным цветом в зависимости от типа проблемы:
 
   - Красный — ошибка при загрузке
@@ -178,6 +181,11 @@ class SquaredBrushPlugin extends Plugin{
 ### <a id="mods-benchmark">Тест производительности</a>
 
 Если в адресной строке в конце ссылки прописать `#benchmark` и обновить страницу, то после создания проекта запустится тестирование частоты кадров отрисовки инструмента выбора цвета и отрисовки рабочей области.
-Это также можно использовать с плагинами в каких-то своих целях
+Это также можно использовать с плагинами в каких-то своих целях:
 
-
+```javascript
+Plugin.benchmark = () => {
+    new Promise(resolve => setTimeout(resolve, 2500))  // Условная нагрузка
+    return true  // Необходимо для вывода в консоль информации о тестировании. В будущих версиях можно будет также выводить текст из тестирования (результаты тестирования)
+}
+```
