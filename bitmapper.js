@@ -1,6 +1,6 @@
 var ROOT = 'https://raw.githubusercontent.com/mrybs/bitmapper/refs/heads/master/'
 //var ROOT = ''
-var VERSION = 'Alpha 140325d'
+var VERSION = 'Alpha 140325e'
 
 function import_global_style(path){
     let link = document.createElement('link')
@@ -20,11 +20,15 @@ function import_styles(paths){
     })
 }
 
-function import_script(path){
+function import_global_script(path){
     let script = document.createElement('script')
     script.type = 'text/javascript'
     script.src = path
     document.getElementsByTagName('body')[0].appendChild(script);
+}
+
+function import_script(path){
+    import_global_script(ROOT+path)
 }
 
 function import_scripts(paths){
