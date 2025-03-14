@@ -19,7 +19,7 @@
             <div id="tabs"><button onclick="tab_factory.createTab()" id="create-tab-btn">+</button></div>
             <div id="statusbar">
                 Alpha
-                140325a
+                140325b
                 <a target="_blank" href="https://github.com/mrybs/bitmapper">GitHub</a>
                 <a target="_blank" href="https://t.me/mrybspublicmatrixchat">Telegram</a>
             </div>
@@ -40,5 +40,11 @@
         <script src="canvas.js"></script>
         <script src="popup.js"></script>
         <script src="core.js"></script>
+        <script src="plugin_loader.js"></script>
+        <script>
+            initPlugin(Plugin)  // Плагин-пустышка
+            initPlugin(BadPlugin)  // "Поломанный" плагин, вызывает ошибку при загрузке
+            loadPlugins()
+        </script>
     </body>
 </html>

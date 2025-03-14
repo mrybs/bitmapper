@@ -188,6 +188,10 @@ class TabFactory{
                         (tab_header, event) => {
                             tab.remove()
                             tab_header.tab_header.remove()
+                            if(this.tabs.includes(data)){
+                                this.tabs.splice(this.tabs.indexOf(data), 1)
+                            }
+                            this.selectLast()
                         })
                         this.deselectAll()
                         data.select()
@@ -208,7 +212,7 @@ class TabFactory{
                 }
             ]
         }
-        let popup = new Popup(document.getElementsByTagName('body')[0], elements.workspace, createProjectForm)
+        new Popup(document.getElementsByTagName('body')[0], elements.workspace, createProjectForm)
 
         elements.hide_toolpane_btn.addEventListener('click', (event) => {
             tab_data.toolpane.hidden = !tab_data.toolpane.hidden
@@ -235,5 +239,13 @@ class TabFactory{
         this.tabs.forEach((tab) => {
             tab.deselect()
         })
+    }
+    selectLast(){
+        this.deselectAll()
+        if(this.tabs.length > 0){
+            setTimeout(() => {
+                this.tabs[this.tabs.length - 1].select()
+            }, 1) // Костыль
+        }
     }
 }

@@ -21,6 +21,8 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/mrybs/bitmapper)
 ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/mrybs/bitmapper)
 
+<img src="docs/images/screenshot.png" alt="Сам редактор" style="width: 60%"/>
+
 ## Использование
 ### Управление
 - Рисовать на холсте ЛКМ или просто одним пальцем.
@@ -28,7 +30,8 @@
 - Масштабировать холст колесиком мыши, с тач-экранов никак.
 
 Горячие клавиши(пока одна):
-![hotkeys](hotkeys.png "Горячие клавиши")
+
+<img src="docs/images/hotkeys.png" alt="Горячие клавиши" style="width: 60%"/>
 
 ## Модификация
 ### Плагины

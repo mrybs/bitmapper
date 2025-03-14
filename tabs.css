@@ -21,9 +21,11 @@
     background-color: var(--background-color);
     color: var(--foreground-color);
     border-radius: 13px;
-    transition: margin .2s ease, background-color .2s ease, border .2s ease;
+    transition: background-color .35s ease;
     max-width: 250px;
     flex-grow: 100;
+    display: flex;
+    justify-content: space-between;
 }
 .tab-header:hover{
     margin: 7px;
@@ -31,6 +33,7 @@
 }
 .tab-header[selected]{
     margin: 0 7px 7px 7px;
+    padding: 6px 10px 2px;
     background-color: var(--inputs-background-color);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -51,6 +54,9 @@
 }
 .tab-header-close:hover{
     background-color: var(--inputs-background-color);
+}
+.tab-header[selected]>.tab-header-close:hover{
+    background-color: var(--highlighted-selected-background-color);
 }
 #create-tab-btn{
     order: 999999999;
