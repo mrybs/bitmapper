@@ -17,6 +17,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/mrybs/bitmapper)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/mrybs/bitmapper)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/mrybs/bitmapper)
+[![wakatime](https://wakatime.com/badge/user/31132aa8-7bac-4b91-ade9-28da2cf0d9b9/project/70d10dd0-3649-491b-9311-8e3a52bf7853.svg)](https://wakatime.com/badge/user/31132aa8-7bac-4b91-ade9-28da2cf0d9b9/project/70d10dd0-3649-491b-9311-8e3a52bf7853)
 ![GitHub Created At](https://img.shields.io/github/created-at/mrybs/bitmapper)
 
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/mrybs/bitmapper)
